@@ -92,10 +92,12 @@ namespace BugFixer.Application.Services.Implementations
                 Title = q.Title,
                 User = q.User,
                 Answers = q.Answers,
+                Visit= q.Visit,
                 QuestionTags = q.QuestionTags.Select(a => new QuestionTagVM()
                 {
                     Tag = a.Tag,
-                })
+                }),
+                Rate=q.QuestionRates.Count()
             }).ToList();
         }
 

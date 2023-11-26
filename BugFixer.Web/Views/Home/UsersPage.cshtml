@@ -1,0 +1,124 @@
+﻿@model BugFixer.Application.ViewModels.User.FilterUsersPageVM
+@{
+    ViewData["Title"] = "users-page";
+}
+
+<div class="user-page-style">
+
+    <div class="breadcumb-layer">
+        <div class="container">
+            <ul itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
+                <li itemtype="http://schema.org/ListItem" itemscope="" itemprop="itemListElement"><a href="" itemprop="item"><span itemprop="name"> باگ فیکسر </span></a></li>
+                <li itemtype="http://schema.org/ListItem" itemscope="" itemprop="itemListElement"><a href="" itemprop="item"><span itemprop="name"> کاربران </span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="users-list page-style">
+
+        <div class="container">
+
+            <div class="right-col">
+                <header class="top-heading">
+                    <h1><a href=""> مشاهده تمامی کاربر ها </a></h1>
+                    <span> <i>@Model.Entities.Count </i> کاربر ثبت شده  </span>
+                </header>
+                <!-- Top -->
+                <div class="top-layer">
+                    <form action="" class="search-layer" onsubmit="handlUserNameFilter">
+                        <input type="text" name="" placeholder="دنبال چه کاربری میگردی ؟ ">
+                        <button><i class="icon-search"></i></button>
+                    </form>
+                    <div class="filter-layer">
+                        <form asp-controller="Home" asp-action="" method="" id="OrderFilterForm">
+                            <div class="select-layer">
+                                <select id="OrderByFilter" onchange="handlOrderTypeFilter(event)">
+                                    <option value="New"> کاربران جدید </option>
+                                    <option value="MostRatedUsers"> امتیازآورترین کاربران </option>
+                                    <option value="MostScoringQuestioners"> امتیازآورترین پرسش کنندگان </option>
+                                </select>
+                            </div>
+                            <button><i class="icon-sort"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <!-- /Top -->
+                <!-- users layer -->
+                <div class="users-list-layer">
+                    <div class="row">
+                        <!-- item -->
+                        @foreach (var item in Model.Entities)
+                        {
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6 user-col">
+                                <article>
+                                    <a href="" class="img-layer"><img src="/images/UsersAvatar/@item.Avatar"></a>
+                                    <div class="left-col">
+                                        <h2><a href=""> @item.UserName</a></h2>
+                                        <span class="address"> <a href=""> ایران </a> , <a href=""> تهران </a> </span>
+                                        <p class="statistics"><span><i> @item.Answers.Count </i> پرسش </span><span><i>@item.Questions.Count </i> پاسخ </span></p>
+                                        <p class="skills">
+                                            @if (item.Resume != null && item.Resume.ResumeSkills != null)
+                                            {
+                                                @foreach (var skil in item.Resume.ResumeSkills)
+                                                {
+                                                    <a href=""> @skil.SkillTitle </a>
+                                                }
+
+                                           
+                                            }
+                                        </p>
+                                    </div>
+                                </article>
+                            </div>
+                        }
+                        <!-- /item -->
+
+                    </div>
+                </div>
+                <!-- /users layer -->
+                <!-- pagination -->
+                <div class="pagination-layer">
+                    <div class="inner">
+                        <a href="" class="next-page"> <i class="icon-chevron-right"></i> </a>
+                        <div class="pages">
+                            <a href="" class="page">1</a>
+                            <a href="" class="page">2</a>
+                            <a href="" class="page current">3</a>
+                            <a href="" class="page">4</a>
+                            <a href="" class="page">5</a>
+                            <a href="" class="page">...</a>
+                        </div>
+                        <a href="" class="prev-page"> <i class="icon-chevron-left"></i> </a>
+                    </div>
+                </div>
+                <!-- /pagination -->
+            </div>
+
+            <!-- aside -->
+            <partial name="_SideBar" />
+            <!-- /aside -->
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Landing{
+    <script>
+        const handlOrderTypeFilter = (e) => {
+
+            const filterText = e.target.value;
+            $("#OrderFilterForm").trigger("submit");
+        }
+        
+
+      
+    </script>
+}
+
+
+
+
+

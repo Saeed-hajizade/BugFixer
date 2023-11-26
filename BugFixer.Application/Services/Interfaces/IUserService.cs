@@ -33,6 +33,10 @@ namespace BugFixer.Application.Services.Interfaces
         #endregion
 
 
+        #region Users Page
+        Task<FilterUsersPageVM> FilterUsersPageServiceAsync(FilterUsersPageVM filter);
+        #endregion
+
 
 
 

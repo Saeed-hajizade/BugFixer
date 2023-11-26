@@ -35,10 +35,16 @@ namespace BugFixer.Domain.Interfaces
 
         #endregion
 
+        #region Profile
         Task<User> ProfileInfoAsync(int id);
         Task FollowUser(Following following);
         Task<IEnumerable<Following>> Followins();
         Task<Following> GetFollowingAsync(int userId, int followingId);
         void DeleteFollowing(Following following);
+        #endregion
+
+        #region Users Page
+        IQueryable<User> UsersPageQueryable();
+        #endregion
     }
 }

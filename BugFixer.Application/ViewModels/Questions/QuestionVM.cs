@@ -13,6 +13,7 @@ namespace BugFixer.Application.ViewModels.Questions
         [Display(Name = "متن سوال")]
         public string? Text { get; set; }
         public int? Visit { get; set; } = 0;
+        public int Rate { get; set; }
         public TrueAnswerVM? TrueAnswer { get; set; }
         #region Relations
         public Domain.Models.User.User? User { get; set; }

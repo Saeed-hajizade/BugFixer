@@ -46,7 +46,7 @@ namespace BugFixer.Data.Repository
             return await _ctx.Questions.Include(q => q.User)
                 .Include(q => q.QuestionTags)
                 .Include(q => q.Answers)
-                .ThenInclude(a => a.User)
+                .ThenInclude(a => a.User).Include(q=> q.QuestionRates)
                 .ToListAsync();
         }
 
