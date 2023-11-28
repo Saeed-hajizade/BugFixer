@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BugFixer.Application.ViewModels.Questions
 {
-    public class QuestionTagVM
+    public class QuestionTagVM:BaseVM.BaseVM
     {
         [Display(Name = "تگ")]
         [MaxLength(100, ErrorMessage = "تعداد کاراکتر های {0}بیش از {1}کاراکتر است")]

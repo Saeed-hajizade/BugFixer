@@ -12,22 +12,15 @@ namespace BugFixer.Data.Repository
         {
             _ctx = ctx;
         }
-
-
-
         #region Question Methods
         public async Task CreateQuestionAsync(Question quesion)
         {
             await _ctx.Questions.AddAsync(quesion);
         }
-
         public async Task CreateQuestionTagAsync(QuestionTag questionTag)
         {
             await _ctx.QuestionTags.AddAsync(questionTag);
         }
-
-
-
         public async Task<Question> GetQuestionAsync(int id)
         {
             return await _ctx.Questions.Include(q => q.QuestionTags)                
@@ -61,17 +54,31 @@ namespace BugFixer.Data.Repository
         {
             await _ctx.SaveChangesAsync();
         }
-
-
-
         public void UpdateQuestion(Question question)
         {
             _ctx.Questions.Update(question);
         }
+        public async Task<IEnumerable<Question>> TopRatedQuestions()
+        {
+            DateTime lastMonthAgo = DateTime.Today.AddMonths(-1);
+            return await _ctx.Questions.Where(q => q.CreateDate < DateTime.Now && q.CreateDate >= lastMonthAgo)
+                .OrderByDescending(q => q.QuestionRates.Count()).Take(8).ToListAsync();
+        }
+        public async Task<IEnumerable<Question>> MostDiscussedQuestions()
+        {
+            DateTime lastMonthAgo = DateTime.Today.AddMonths(-1);
+            return await _ctx.Questions.Where(q=> q.CreateDate < DateTime.Now && q.CreateDate >= lastMonthAgo)
+             .OrderByDescending(q => q.Answers.Count()).Take(8).ToListAsync();
+        }
+        public async Task<IEnumerable<QuestionTag>> MostDiscussedQuestionTagsAsync()
+        {
+            DateTime lastMonthAgo = DateTime.Today.AddMonths(-1);
+            return await _ctx.QuestionTags
+                .Where(qt => qt.CreateDate < DateTime.Now && qt.CreateDate >= lastMonthAgo)
+                .OrderByDescending(qt=> qt.Question.Answers.Count()).Take(8)
+                .ToListAsync();
+        }
         #endregion
-
-
-
 
         #region Answer Methods
         public async Task CreateAnswerAsync(Answer answer)
@@ -105,8 +112,6 @@ namespace BugFixer.Data.Repository
 
 
         #endregion
-
-
         #region Profile
         public async Task<IEnumerable<Question>> ProfileSelectedQuestionsAsync(int id)
         {
@@ -118,6 +123,12 @@ namespace BugFixer.Data.Repository
             return await _ctx.Answers.Where(q => q.UserId == id).ToListAsync();
 
         }
+
+      
+
+
+
+
         #endregion
     }
 }

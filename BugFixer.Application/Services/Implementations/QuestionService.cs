@@ -125,6 +125,44 @@ namespace BugFixer.Application.Services.Implementations
                 AnswersCount = aCounts != null ? aCounts : 0
             };
         }
+
+        public  async Task<IEnumerable<QuestionVM>> TopRatedQuestionsService()
+        {
+            IEnumerable<Question> questions =await  _questionRepository.TopRatedQuestions();
+            return questions.Select(q => new QuestionVM()
+            {
+                Rate=q.QuestionRates.Count(),
+                Id=q.Id,
+                Title=q.Title,
+            }).ToList();
+        
+
+
+          
+        }
+
+
+        public  async Task<IEnumerable<QuestionVM>> MostDiscussedQuestionsService()
+        {
+            IEnumerable<Question> questions = await _questionRepository.MostDiscussedQuestions();
+            return questions.Select(q => new QuestionVM()
+            {
+                NumberOfAnswers=q.Answers.Count(),
+                Id = q.Id,
+                Title = q.Title,
+            }).ToList();
+        }
+
+        public async Task<IEnumerable<QuestionTagVM>> MostDiscussedQuestionTagsServiceAsync()
+        {
+            IEnumerable<QuestionTag> questionTags = await _questionRepository.MostDiscussedQuestionTagsAsync();
+            return questionTags.Select(qt => new QuestionTagVM()
+            {
+                Id=qt.Id,
+                Tag=qt.Tag,
+            }).ToList();
+        }
+
         #endregion
 
 
@@ -284,6 +322,12 @@ namespace BugFixer.Application.Services.Implementations
                 CreateDate = q.CreateDate,
             }).ToList();
         }
+
+      
+
+
+
+
         #endregion
     }
 }

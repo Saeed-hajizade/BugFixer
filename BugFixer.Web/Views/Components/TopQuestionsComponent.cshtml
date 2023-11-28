@@ -1,0 +1,14 @@
+﻿@model List<BugFixer.Application.ViewModels.Questions.QuestionVM>
+<article>
+    <header><h2> پر بحث ترین پرسش های یک ماه اخیر </h2></header>
+    <ul>
+        @foreach (var question in Model)
+        {
+            <li>
+                <span> @question.NumberOfAnswers <i class="icon-star"></i></span>
+                <h2><a href="/show-question/@question.Id"> @question.Title </a></h2>
+            </li>
+        }
+
+    </ul>
+</article>
