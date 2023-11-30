@@ -1,4 +1,4 @@
-﻿
+﻿@model BugFixer.Application.ViewModels.User.AccessMenuVM
 @{
     ViewData["Title"] = "AccessMenu";
 }
@@ -17,12 +17,11 @@
                 </ul>
             </li>
             <li><a href="/user-panel/resume"> مدیریت رزومه  </a>  </li>
-            <li><a href="account-5.html"> پرسش های من  </a> <i> @ViewBag.qaCounts.QuestionsCount </i> </li>
-            <li><a href="account-6.html"> پاسخ های من  </a> <i> @ViewBag.qaCounts.AnswersCount </i> </li>
-            <li><a href="account-7.html"> دنبال کنندگان  </a> <i> 12 </i> </li>
-            <li><a href="account-8.html"> دنبال شونده ها  </a> <i> 24 </i> </li>
-            <li><a href="account-9.html"> صندوق پیام ها  </a> <i> 0 </i> </li>
-            <li><a href="account-10.html"> سوالات متداول و راهنما  </a> </li>
+            <li><a href="/user-panel/questions"> پرسش های من  </a> <i> @Model.QuestionsCount </i> </li>
+            <li><a href="/user-panel/answers"> پاسخ های من  </a> <i> @Model.AnswersCount</i> </li>
+            <li><a href="/user-panel/followers"> دنبال کنندگان  </a> <i> @Model.FollowersCount </i> </li>
+            <li><a href="/user-panel/followings"> دنبال شونده ها  </a> <i> @Model.FollowingsCount </i> </li>
+            <li><a href="/user-panel/faq"> سوالات متداول و راهنما  </a> </li>
         </ul>
     </div>
 </section>

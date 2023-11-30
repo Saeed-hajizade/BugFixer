@@ -149,6 +149,24 @@ namespace BugFixer.Data.Repository
                 .ThenInclude(r=> r.ResumeSkills)
                 .AsQueryable();
         }
+
+        #endregion
+
+        #region Followings
+
+
+        public async Task<int> GetUserFollowingsCountAsync(int userId)
+        {
+            return await _ctx.Followings
+                .Where(f => f.FollowingId == userId).CountAsync();
+        }
+
+        public async Task<int> GetUserFollowersCountAsync(int userId)
+        {
+            return await _ctx.Followings
+                    .Where(f => f.UserId == userId).CountAsync();
+        }
+
         #endregion
     }
 }

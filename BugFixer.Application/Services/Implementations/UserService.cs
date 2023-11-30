@@ -241,5 +241,21 @@ namespace BugFixer.Application.Services.Implementations
             return filter;
         }
         #endregion
+
+        #region Followings
+            
+        public async Task<UserFollowingFollowersCountVM> GetUserFollowingsFollowersCountServiceAsync(int userId)
+        {
+            int followersCount = await _userRepository.GetUserFollowersCountAsync(userId);
+            int followingsCount = await _userRepository.GetUserFollowingsCountAsync(userId);
+
+            return new UserFollowingFollowersCountVM
+            {
+                FollowersCount = followersCount == null ? 0 : followersCount,
+                FollowingsCount = followingsCount == null ? 0 : followingsCount,
+            };
+        }
+
+        #endregion
     }
 }

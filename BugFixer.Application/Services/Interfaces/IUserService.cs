@@ -38,7 +38,11 @@ namespace BugFixer.Application.Services.Interfaces
         #endregion
 
 
+        #region Followings
 
+        Task<UserFollowingFollowersCountVM> GetUserFollowingsFollowersCountServiceAsync(int userId);
+
+        #endregion
 
     }
 }
