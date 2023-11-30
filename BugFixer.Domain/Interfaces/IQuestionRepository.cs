@@ -20,6 +20,7 @@ namespace BugFixer.Domain.Interfaces
         Task CreateQuestionTagAsync(QuestionTag questionTag);
         void UpdateQuestion(Question question);
         Task<int> GetUserQuestionsCountAsync(int userId);
+        Task<List<Question>> GetQuestinsBySearchAsync(string search);
         #endregion
 
 

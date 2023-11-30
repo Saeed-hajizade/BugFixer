@@ -171,9 +171,11 @@ namespace BugFixer.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnswerId");
+                    b.HasIndex("AnswerId")
+                        .IsUnique();
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("QuestionId")
+                        .IsUnique();
 
                     b.ToTable("TrueAnswers");
                 });
@@ -494,14 +496,14 @@ namespace BugFixer.Data.Migrations
             modelBuilder.Entity("BugFixer.Domain.Models.Questions.TrueAnswer", b =>
                 {
                     b.HasOne("BugFixer.Domain.Models.Questions.Answer", "Answer")
-                        .WithMany()
-                        .HasForeignKey("AnswerId")
+                        .WithOne("TrueAnswer")
+                        .HasForeignKey("BugFixer.Domain.Models.Questions.TrueAnswer", "AnswerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BugFixer.Domain.Models.Questions.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
+                        .WithOne("TrueAnswer")
+                        .HasForeignKey("BugFixer.Domain.Models.Questions.TrueAnswer", "QuestionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -570,6 +572,11 @@ namespace BugFixer.Data.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("BugFixer.Domain.Models.Questions.Answer", b =>
+                {
+                    b.Navigation("TrueAnswer");
+                });
+
             modelBuilder.Entity("BugFixer.Domain.Models.Questions.Question", b =>
                 {
                     b.Navigation("Answers");
@@ -577,6 +584,8 @@ namespace BugFixer.Data.Migrations
                     b.Navigation("QuestionRates");
 
                     b.Navigation("QuestionTags");
+
+                    b.Navigation("TrueAnswer");
                 });
 
             modelBuilder.Entity("BugFixer.Domain.Models.Resume.Resume", b =>

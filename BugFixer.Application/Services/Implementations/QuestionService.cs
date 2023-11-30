@@ -123,6 +123,38 @@ namespace BugFixer.Application.Services.Implementations
                 AnswersCount = aCounts != null ? aCounts : 0
             };
         }
+
+        public async Task<List<QuestionVM>> GetQuestinsBySearchServiceAsync(string search)
+        {
+            string validatedStringSearch = search.ToLower().Trim();
+            var result = await _questionRepository.GetQuestinsBySearchAsync(validatedStringSearch);
+
+            return result.Select(question => new QuestionVM()
+            {
+                Id = question.Id,
+                Title = question.Title,
+                Text = question.Text,
+                CreateDate = question.CreateDate,
+                Visit = question.Visit,
+                TrueAnswer = new TrueAnswerVM
+                {
+                    QuestionId = question.TrueAnswer?.QuestionId != null ? question.TrueAnswer.QuestionId : 0,
+                    AnswerId = question.TrueAnswer?.AnswerId != null ? question.TrueAnswer.AnswerId : 0
+                },
+                QuestionTags = question.QuestionTags?.Select(q => new QuestionTagVM()
+                {
+                    Tag = q.Tag,
+                }).ToList(),
+
+                User = question.User,
+                Answers = question.Answers,
+                QuestionRates = question.QuestionRates?.Select(r => new QuestionRateVM
+                {
+                    QuestionId = r.QuestionId,
+                    UserId = r.UserId
+                })
+            }).ToList();
+        }
         #endregion
 
 

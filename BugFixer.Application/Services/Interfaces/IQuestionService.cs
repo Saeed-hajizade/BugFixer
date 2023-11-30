@@ -16,6 +16,7 @@ namespace BugFixer.Application.Services.Interfaces
         Task CreateQuestionServiceAsync(CreateQuestionVM quesion, int userId);
         Task UpdteQuestionVisitService(int questionId);
         Task<QACounts> GetQACountsServiceAsync(int userId);
+        Task<List<QuestionVM>> GetQuestinsBySearchServiceAsync(string search);
         #endregion
 
 

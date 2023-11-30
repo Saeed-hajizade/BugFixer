@@ -9,7 +9,6 @@
     <script src="js/modernizr.js"></script>
 
     <!-- lanfing page -->
-
     @await RenderSectionAsync("Landing",false)
     <!-- /lanfing page -->
     <!-- menu -->
@@ -18,18 +17,20 @@
 
     <div class="container">
         <!-- questions -->
-       @RenderBody()
+        @RenderBody()
         <!-- /questions -->
         <!-- aside -->
-     
         @await RenderSectionAsync("SideBar",false)
 
         <!-- /aside -->
+
+      
+
         <div class="clearfix"></div>
     </div>
 
 
-    <partial name="_Footer"/>
+    <partial name="_Footer" />
     <partial name="_Scripts" />
 </body>
 </html>

@@ -68,6 +68,18 @@ namespace BugFixer.Data.Repository
         {
             _ctx.Questions.Update(question);
         }
+
+        public async Task<List<Question>> GetQuestinsBySearchAsync(string search)
+        {
+            return await _ctx.Questions
+                .Include(q => q.QuestionTags)
+                .Include(q => q.User)
+                .Include(q => q.TrueAnswer)
+                .Include(q => q.Answers)
+                .Include(q => q.QuestionRates)
+                .Where(q => q.Title.ToLower().Contains(search) || q.QuestionTags.Any(qt => qt.Tag.ToLower().Contains(search)))
+                .ToListAsync();
+        }
         #endregion
 
 
