@@ -17,6 +17,9 @@ namespace BugFixer.Application.Services.Interfaces
         Task UpdteQuestionVisitService(int questionId);
         Task<QACounts> GetQACountsServiceAsync(int userId);
         Task<List<QuestionVM>> GetQuestinsBySearchServiceAsync(string search);
+        Task<IEnumerable<QuestionVM>> TopRatedQuestionsService();
+        Task<IEnumerable<QuestionVM>> MostDiscussedQuestionsService();
+        Task<IEnumerable<QuestionTagVM>> MostDiscussedQuestionTagsServiceAsync();
         #endregion
 
 

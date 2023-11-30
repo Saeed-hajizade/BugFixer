@@ -3,57 +3,8 @@
     <!-- most popular post -->
     <section class="most-popular-questions">
 
-        <article>
-            <header><h2> پر امتیازترین پرسش های یک ماه اخیر </h2></header>
-            <ul>
-                <li>
-                    <span> 10K <i class="icon-star"></i></span>
-                    <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                </li>
-                <li>
-                    <span> 3K <i class="icon-star"></i></span>
-                    <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                </li>
-                <li>
-                    <span> 6K <i class="icon-star"></i></span>
-                    <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                </li>
-                <li>
-                    <span> 2K <i class="icon-star"></i></span>
-                    <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                </li>
-                <li>
-                    <span> 8K <i class="icon-star"></i></span>
-                    <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                </li>
-            </ul>
-        </article>
-
-        <article>
-            <header><h2> پر بحث ترین پرسش های یک ماه اخیر </h2></header>
-            <ul>
-                <li>
-                    <span> 8.5K <i class="icon-comment"></i></span>
-                    <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                </li>
-                <li>
-                    <span> 7K <i class="icon-comment"></i></span>
-                    <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                </li>
-                <li>
-                    <span> 11K <i class="icon-comment"></i></span>
-                    <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                </li>
-                <li>
-                    <span> 134K <i class="icon-comment"></i></span>
-                    <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                </li>
-                <li>
-                    <span> 8K <i class="icon-comment"></i></span>
-                    <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                </li>
-            </ul>
-        </article>
+        @await Component.InvokeAsync("MostRateQuestions")
+        @await Component.InvokeAsync("TopQuestions")
 
     </section>
     <!-- /most popular post -->
@@ -61,39 +12,7 @@
     <!-- most controversial tags -->
     <section class="most-controversial-tags">
         <header><h2> پر بحث ترین تگ ها </h2></header>
-        <div class="tags-layer">
-            <a href=""> Jquery </a>
-            <a href=""> php </a>
-            <a href=""> Javascript </a>
-            <a href=""> asp </a>
-            <a href=""> mvc </a>
-            <a href=""> C# </a>
-            <a href=""> woocommerce </a>
-            <a href=""> Framework </a>
-            <a href=""> Jquery </a>
-            <a href=""> php </a>
-            <a href=""> Framework </a>
-            <a href=""> Jquery </a>
-            <a href=""> php </a>
-            <a href=""> Javascript </a>
-            <a href=""> asp </a>
-            <a href=""> mvc </a>
-            <a href=""> C# </a>
-            <a href=""> woocommerce </a>
-            <a href=""> Framework </a>
-            <a href=""> Jquery </a>
-            <a href=""> Javascript </a>
-            <a href=""> Javascript </a>
-            <a href=""> asp </a>
-            <a href=""> mvc </a>
-            <a href=""> C# </a>
-            <a href=""> Jquery </a>
-            <a href=""> Javascript </a>
-            <a href=""> Javascript </a>
-            <a href=""> asp </a>
-            <a href=""> mvc </a>
-            <a href=""> C# </a>
-        </div>
+        @await Component.InvokeAsync("MostDiscussedQuestionTags")
     </section>
     <!-- /most controversial posts -->
     <!-- banner -->

@@ -1,0 +1,8 @@
+﻿@model List<BugFixer.Application.ViewModels.Questions.QuestionTagVM>
+<div class="tags-layer">
+    @foreach(var tag in Model)
+    {
+        <a href=""> @tag.Tag </a>
+    }
+
+</div>

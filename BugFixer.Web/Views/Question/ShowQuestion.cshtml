@@ -219,25 +219,27 @@
 
 
 
-
-
-
-                                    @for (int i = @filter.GetCurrentPaging().StartPage; i <= @filter.GetCurrentPaging().EndPage; i++)
-                                    {
-                                        if (@filter.GetCurrentPaging().Page == i)
+                                   
+                                        @for (int i = @filter.GetCurrentPaging().StartPage; i <= @filter.GetCurrentPaging().EndPage; i++)
                                         {
-                                            <li class="paginate_button active">
-                                                <a class="page-link cursor-pointer" data-page="0" href="/show-question/@Model.Id?pageid=@i">@i</a>
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            <li class="paginate_button ">
-                                                <a class="page-link cursor-pointer" data-page="0" href="/show-question/@Model.Id?pageid=@i">@i</a>
-                                            </li>
-                                        }
+                                            if (@filter.GetCurrentPaging().Page == i)
+                                            {
+                                                <li class="paginate_button active">
+                                                    <a class="page-link cursor-pointer" data-page="0" href="/show-question/@Model.Id?pageid=@i">@i</a>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li class="paginate_button ">
+                                                    <a class="page-link cursor-pointer" data-page="0" href="/show-question/@Model.Id?pageid=@i">@i</a>
+                                                </li>
+                                            }
 
-                                    }
+                                        }
+                                    
+
+
+                                
 
 
 

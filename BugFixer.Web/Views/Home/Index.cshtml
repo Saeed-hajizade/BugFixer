@@ -35,7 +35,7 @@
         {
             <article class="answered">
                 <h2><a href="/show-question/@item.Id">@item.Title</a></h2>
-                <span> 236 <i class="icon-comment-1"></i> </span>
+                <span> @item.Answers.Count() <i class="icon-comment-1"></i> </span>
                 <ul>
                     <li> پرسیده شده توسط  <a href="">  @item.User.UserName </a> در 1  ساعت پیش </li>
                     @if (item.Answers.Any())
@@ -58,8 +58,8 @@
 
                     </div>
                     <div class="left-side">
-                        <span> 983 <i class="icon-star"></i> </span>
-                        <span> 264 <i class="icon-eye"></i> </span>
+                        <span> @item.Rate <i class="icon-star"></i> </span>
+                        <span> @item.Visit <i class="icon-eye"></i> </span>
                     </div>
                 </div>
             </article>

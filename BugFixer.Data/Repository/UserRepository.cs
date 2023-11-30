@@ -135,6 +135,20 @@ namespace BugFixer.Data.Repository
         {
             _ctx.Followings.Remove(following);
         }
+
+
+        #endregion
+
+        #region Users Page
+        public  IQueryable<User> UsersPageQueryable()
+        {
+            return  _ctx.Users.Include(u=> u.Answers)
+                .ThenInclude(a=> a.TrueAnswer)
+                .Include(u=> u.Questions)
+                .Include(u=> u.Resume)
+                .ThenInclude(r=> r.ResumeSkills)
+                .AsQueryable();
+        }
         #endregion
     }
 }

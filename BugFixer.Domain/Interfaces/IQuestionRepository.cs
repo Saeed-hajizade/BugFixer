@@ -21,6 +21,10 @@ namespace BugFixer.Domain.Interfaces
         void UpdateQuestion(Question question);
         Task<int> GetUserQuestionsCountAsync(int userId);
         Task<List<Question>> GetQuestinsBySearchAsync(string search);
+        Task<IEnumerable<Question>> TopRatedQuestions();
+        Task<IEnumerable<Question>> MostDiscussedQuestions();
+        Task<IEnumerable<QuestionTag>> MostDiscussedQuestionTagsAsync();
+
         #endregion
 
 

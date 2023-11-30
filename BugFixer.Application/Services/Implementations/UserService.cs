@@ -200,6 +200,46 @@ namespace BugFixer.Application.Services.Implementations
         {
             return await _userRepository.Followins();
         }
+
+
+        #endregion
+
+        #region Users Page
+        public async Task<FilterUsersPageVM> FilterUsersPageServiceAsync(FilterUsersPageVM filter)
+        {
+            IQueryable<User> query = _userRepository.UsersPageQueryable();
+
+            if (!string.IsNullOrEmpty(filter.UserName))
+            {
+                query = query.Where(u => EF.Functions.Like(u.UserName, $"%{filter.UserName.Trim().ToLower()}%"));
+            }
+
+            switch (filter.OrderType)
+            {
+                case "New":
+                    query = query.OrderBy(u => u.CreateDate);
+                    break;
+                case "MostRatedUsers":
+                    query = query.OrderBy(u=> u.Answers.Select(a=> a.TrueAnswer).ToList().Count());
+                    break;
+                case "MostScoringQuestioners":
+                    query = query.OrderBy(u=> u.Questions.Select(q=> q.QuestionRates).ToList().Count());
+                    break;
+
+
+
+                default:
+                    break;
+            }
+
+            if(filter.Reverse==true)
+                query= query.Reverse();
+
+
+            await filter.Paging(query);
+
+            return filter;
+        }
         #endregion
     }
 }
