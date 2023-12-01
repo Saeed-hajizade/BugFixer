@@ -27,8 +27,6 @@ namespace BugFixer.Domain.Interfaces
 
         #endregion
 
-
-
         #region Answer Methods
         Task CreateAnswerAsync(Answer answer);
         IQueryable<Answer> QuestionAnswersQueryable(int id);
@@ -43,6 +41,10 @@ namespace BugFixer.Domain.Interfaces
 
         Task<IEnumerable<Answer>> ProfileSelectedAswersAsync(int id);
 
+        #endregion
+
+        #region UserPanel      
+        Task<List<Question>> GetUserQuestionsAsync(int userId);
         #endregion
 
     }

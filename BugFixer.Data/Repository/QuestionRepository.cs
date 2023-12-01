@@ -136,11 +136,23 @@ namespace BugFixer.Data.Repository
 
         }
 
-      
 
 
 
 
+
+        #endregion
+
+# region userPanel
+        public async Task<List<Question>> GetUserQuestionsAsync(int userId)
+        {
+            return await _ctx.Questions
+                .Where(q => q.UserId == userId)
+                .Include(q => q.Answers)
+                .ThenInclude(a => a.User)
+                .Include(q => q.QuestionRates)
+                .ToListAsync();
+        }
         #endregion
     }
 }

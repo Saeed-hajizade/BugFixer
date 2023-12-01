@@ -16,14 +16,18 @@ namespace BugFixer.Web.Areas.UserPanel.Controllers
         #region Fields
         private readonly IAccountService _accountService;
         private readonly IResumeService _resumeService;
+        private readonly IQuestionService _questionService;
+        private readonly IAnswerService _answerService;
         #endregion
 
 
         #region Constructor
-        public HomeController(IAccountService accountService, IResumeService resumeService)
+        public HomeController(IAccountService accountService, IResumeService resumeService, IQuestionService questionService, IAnswerService answerService)
         {
             _accountService = accountService;
-            _resumeService = resumeService; 
+            _resumeService = resumeService;
+            _questionService = questionService;
+            _answerService = answerService; 
         }
         #endregion
 
@@ -117,6 +121,18 @@ namespace BugFixer.Web.Areas.UserPanel.Controllers
             await _resumeService.CreateResumeServiceAsync(model);
             return View();
         }
+        #endregion
+
+        #region Questions
+
+        [Route("/user-panel/questions")]
+        public async Task<IActionResult> Questions()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var questions = await _questionService.GetUserQuestionsSeviceAsync(userId);
+            return View(questions);
+        }
+
         #endregion
 
         #endregion

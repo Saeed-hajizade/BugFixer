@@ -163,7 +163,7 @@ namespace BugFixer.Application.Services.Implementations
             IEnumerable<Question> questions =await  _questionRepository.TopRatedQuestions();
             return questions.Select(q => new QuestionVM()
             {
-                Rate=q.QuestionRates.Count(),
+                Rate=q.QuestionRates == null ? 0 : q.QuestionRates.Count(),
                 Id=q.Id,
                 Title=q.Title,
             }).ToList();
@@ -179,7 +179,7 @@ namespace BugFixer.Application.Services.Implementations
             IEnumerable<Question> questions = await _questionRepository.MostDiscussedQuestions();
             return questions.Select(q => new QuestionVM()
             {
-                NumberOfAnswers=q.Answers.Count(),
+                NumberOfAnswers=q.Answers == null ? 0 : q.Answers.Count(),
                 Id = q.Id,
                 Title = q.Title,
             }).ToList();
@@ -355,10 +355,23 @@ namespace BugFixer.Application.Services.Implementations
             }).ToList();
         }
 
-      
+        #endregion
 
+        #region UserPanel
 
-
+        public async Task<List<UserPanelQuestionsVM>> GetUserQuestionsSeviceAsync(int userId)
+        {
+            var questions = await _questionRepository.GetUserQuestionsAsync(userId);
+            return questions.Select(q => new UserPanelQuestionsVM() { 
+                Id = q.Id,
+                Title = q.Title,
+                CreatedAt= q.CreateDate,
+                AnswersCount=q.Answers == null ? 0 : q.Answers.Count(),
+                RatesCount=q.QuestionRates == null ? 0 : q.QuestionRates.Count(),
+                Visits=q.Visit,
+                LastAnswerUsername= q.Answers.Count() == 0 ? "بدون پاسخ" : q.Answers.LastOrDefault().User.UserName,
+            }).ToList();
+        }
 
         #endregion
     }
