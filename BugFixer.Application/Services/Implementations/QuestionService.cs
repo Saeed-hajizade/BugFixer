@@ -273,10 +273,25 @@ namespace BugFixer.Application.Services.Implementations
             };
         }
 
+        public async Task<List<UserPanelAnswerVM>> GetUserAnswerServiceAsync(int userId)
+        {
+            var answers = await _questionRepository.GetUserAnswersAsync(userId);
+            return answers.Select(a => new UserPanelAnswerVM()
+            {
+                Id = a.Question.Id,
+                Title = a.Text,
+                CreatedAt = a.CreateDate,
+                AnswersCount = a.Question.Answers == null ? 0 : a.Question.Answers.Count(),
+                RatesCount = a.Question.QuestionRates == null ? 0 : a.Question.QuestionRates.Count(),
+                Visits = a.Question.Visit,
+                LastAnswerUsername = a.Question.Answers.Count() == 0 ? "بدون پاسخ" : a.Question.Answers.LastOrDefault().User.UserName,
+            }).ToList();
+        }
+
         #endregion
 
         #region QuestionRate Methods
-     
+
         public async Task<bool> HandleQuestionRateServiceAsync(int qID, int userID)
         {
             var questionRate = await _questionRateRepository.GetQuestionRateAsync(qID, userID);

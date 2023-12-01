@@ -27,6 +27,7 @@ namespace BugFixer.Application.Services.Interfaces
         Task CreateAnswerServiceAsync(string answerText, int questionId, int userId);
         Task<FilterQuestionAswersVM> QuestionAnswersFilter(FilterQuestionAswersVM filter, int questionId);
         Task UpdateAnswerService(UpdateAnswerVM updateAnswer);
+        Task<List<UserPanelAnswerVM>> GetUserAnswerServiceAsync(int userId);
         Task<UpdateAnswerVM> GetAnswerForUpdateServiceAsync(int answerId);
 
         #endregion

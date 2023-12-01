@@ -116,6 +116,16 @@ namespace BugFixer.Data.Repository
                 .SelectMany(q => q.Answers)
                 .Count();
         }
+        public async Task<List<Answer>> GetUserAnswersAsync(int userId)
+        {
+            return await _ctx.Answers
+                .Where(a => a.UserId ==  userId)
+                .Include(a => a.Question)
+                .ThenInclude(q => q.QuestionRates)
+                .Include(a => a.User)
+                .ToListAsync();
+
+        }
         public void UpdateAnswer(Answer answer)
         {
             _ctx.Answers.Update(answer);

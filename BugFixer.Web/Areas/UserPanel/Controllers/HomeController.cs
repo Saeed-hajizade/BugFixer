@@ -134,6 +134,18 @@ namespace BugFixer.Web.Areas.UserPanel.Controllers
         }
 
         #endregion
+        
+        #region Answers
+
+        [Route("/user-panel/answers")]
+        public async Task<IActionResult> Answers()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var answers = await _questionService.GetUserAnswerServiceAsync(userId);
+            return View(answers);
+        }
+
+        #endregion
 
         #endregion
     }

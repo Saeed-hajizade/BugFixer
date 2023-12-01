@@ -33,6 +33,7 @@ namespace BugFixer.Domain.Interfaces
         void UpdateAnswer(Answer answer);
         Task<Answer> GetAnswerById(int id);
         Task<int> GetUserAnswersCountAsync(int userId);
+        Task<List<Answer>> GetUserAnswersAsync(int userId);
 
         #endregion
 
