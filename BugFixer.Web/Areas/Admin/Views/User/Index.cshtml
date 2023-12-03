@@ -5,10 +5,20 @@
 
 @{
     ViewData["Title"] = "مدیریت کاربران";
+    string usernameFilterBag = ViewBag.UserNameFilter as string;
+    int takeEntityFilterBag = (int)ViewBag.TakeEntityFilter;
 }
 
 @section FooterRefrences{
     <script src="/Admin/dist/js/custom.js"></script>
+
+    <script>
+        const handleTakeEntityFilter = () => {
+            const form = document.getElementById("TakeEntityFilterForm");
+
+            form.submit();
+        }
+    </script>
 }
 
 <section class="content-header">
@@ -37,23 +47,28 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="dataTables_length" id="example1_length">
-                                    <label>
-                                        تعداد نمایش
-                                        <select name="example1_length" aria-controls="example1" class="form-control input-sm">
-                                            <option value="10">10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select> 
-                                    </label>
+                                    <form asp-area="Admin" asp-controller="User" asp-action="Index" method="get" id="TakeEntityFilterForm">
+                                        <input type="hidden" value="@Model.Page" name="pageId" />
+                                        <input type="hidden" value="@usernameFilterBag" name="userNameFilter" />
+                                        <label>
+                                            تعداد نمایش
+                                            <select name="takeEntityFilter" aria-controls="example1" class="form-control input-sm" onchange="handleTakeEntityFilter()">
+                                                <option value="10" selected="@((takeEntityFilterBag==10)?true:false)">10</option>
+                                                <option value="25" selected="@((takeEntityFilterBag==25)?true:false)">25</option>
+                                                <option value="50" selected="@((takeEntityFilterBag==50)?true:false)">50</option>
+                                                <option value="100" selected="@((takeEntityFilterBag==100)?true:false)">100</option>
+                                            </select>
+                                        </label>
+                                   </form>
                                 </div>
                             </div>
-                            <form asp-area="Admin" asp-controller="User" asp-action="FilterUsersAjax" id="filter-search" class="d-flex" data-ajax="true" data-method="get" data-ajax-complete="complete" data-ajax-begin="open_waiting()" data-ajax-success="close_waiting()" data-ajax-mode="replace" data-ajax-update="#FilterUsers">
-                                <input type="hidden" asp-for="Page" />
+                            <form asp-area="Admin" asp-controller="User" asp-action="Index" method="get" id="filter-search" class="d-flex" >
+                                <input type="hidden" value="@Model.Page" name="pageId" />
+                                <input type="hidden" value="@takeEntityFilterBag" name="takeEntityFilter" />
                                 <div class="col-sm-6">
                                     <div id="example1_filter" class="dataTables_filter">
                                         <label>
-                                            جستجو:<input type="search" asp-for="UserName" class="form-control input-sm" placeholder="" aria-controls="example1">
+                                            جستجو:<input type="search" name="userNameFilter" class="form-control input-sm" placeholder="" aria-controls="example1">
                                         </label>
                                         <button type="submit" class="btn btn-primary btn-sm">اعمال</button>
                                     </div>
@@ -125,7 +140,34 @@
                                 </table>
                             </div>
                         </div>
-                        <partial name="_SitePaging" model="@Model.GetCurrentPaging()" />
+                        <!-- pagination -->
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing 1 to @Model.TakeEntity of @Model.Entities.Count entries</div>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                                    <ul class="pagination">
+                                        @for (int i = Model.GetCurrentPaging().StartPage; i <= @Model.GetCurrentPaging().EndPage; i++)
+                                        {
+                                            if (@Model.GetCurrentPaging().Page == i)
+                                            {
+                                                <li class="paginate_button active">
+                                                    <a class="page-link cursor-pointer" data-page="0" href="/admin/user-list?pageId=@i&UserNameFilter=@usernameFilterBag&takeEntityFilter=@takeEntityFilterBag">@i</a>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li class="paginate_button ">
+                                                    <a class="page-link cursor-pointer" data-page="0" href="/admin/user-list?pageId=@i&UserNameFilter=@usernameFilterBag&takeEntityFilter=@takeEntityFilterBag">@i</a>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /pagination -->
                     </div>
                 </div>
                 <!-- /.box-body -->
