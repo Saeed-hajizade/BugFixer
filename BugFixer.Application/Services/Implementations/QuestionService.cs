@@ -100,11 +100,41 @@ namespace BugFixer.Application.Services.Implementations
                 Rate=q.QuestionRates.Count()
             }).ToList();
         }
+        public async Task<FilterQuestionVM> FilterQuestionsAsync(FilterQuestionVM filterQuestionVM)
+        {
+            IQueryable<Question> query = _questionRepository.GetQuestionsQueryable();
+
+            switch (filterQuestionVM.OrderType)
+            {
+                case "New":
+                    query = query.OrderBy(q => q.CreateDate);
+                    break;
+                case "MostControversial":
+                    query = query.OrderBy(q => q.Answers.Count());
+                    break;
+                case "MostOutstanding":
+                    query = query.OrderBy(q => q.QuestionRates.Count());
+                    break;
+                case "WeekAgo":
+                    DateTime weeAgoTime = DateTime.Today.AddDays(-7);
+                    query = query.OrderBy(q=> q.CreateDate < DateTime.Now && q.CreateDate >=weeAgoTime);
+                    break;
+                case "MonthAgo":
+                    DateTime monthAgoTime = DateTime.Today.AddMonths(-1);
+                    query = query.OrderBy(q => q.CreateDate < DateTime.Now && q.CreateDate >= monthAgoTime);
+
+                    break;
+
+                default:
+                    break;
+
+            }
 
 
 
-
-
+            await filterQuestionVM.Paging(query);
+            return filterQuestionVM;
+        }
         public async Task UpdteQuestionVisitService(int questionId)
         {
             Question question = await _questionRepository.GetQuestionAsync(questionId);
@@ -147,7 +177,7 @@ namespace BugFixer.Application.Services.Implementations
             IEnumerable<Question> questions = await _questionRepository.MostDiscussedQuestions();
             return questions.Select(q => new QuestionVM()
             {
-                NumberOfAnswers=q.Answers.Count(),
+                NumberOfAnswers=!q.Answers.IsNullOrEmpty()?q.Answers.Count():0,
                 Id = q.Id,
                 Title = q.Title,
             }).ToList();
@@ -324,6 +354,8 @@ namespace BugFixer.Application.Services.Implementations
         }
 
       
+
+
 
 
 

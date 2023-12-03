@@ -14,6 +14,7 @@ namespace BugFixer.Domain.Interfaces
 
         #region Question Methods
         Task<IEnumerable<Question>> GetQuestionsAsync();
+        IQueryable<Question> GetQuestionsQueryable();
         Task<Question> GetQuestionAsync(int id);
         Task CreateQuestionAsync(Question quesion);
 

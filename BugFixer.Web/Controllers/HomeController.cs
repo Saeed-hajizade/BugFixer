@@ -9,10 +9,13 @@ namespace BugFixer.Web.Controllers
 {
     public class HomeController : Controller
     {
+        #region Properties
         private readonly ILogger<HomeController> _logger;
         private readonly IQuestionService _questionService;
         private readonly IUserService _userService;
+        #endregion
 
+        #region Constructor
         public HomeController(ILogger<HomeController> logger,
             IQuestionService questionService,
             IUserService userService
@@ -22,18 +25,21 @@ namespace BugFixer.Web.Controllers
             _questionService = questionService;
             _userService = userService;
         }
+        #endregion
 
-        [Route("/")]
-        public async Task<IActionResult> Index()
+        #region Index
+        [HttpGet("/")]
+        public async Task<IActionResult> Index(string orderType,int pageId=1)
         {
-            IEnumerable<QuestionVM> questionList = await _questionService.GetQuestionsServiceAsync();
-            return View(questionList);
-        }
-
-        public IActionResult Privacy()
+            FilterQuestionVM filterQuestionVM = new FilterQuestionVM()
         {
-            return View();
+                Page=pageId,
+                OrderType=orderType,
+            };
+            FilterQuestionVM result=await _questionService.FilterQuestionsAsync(filterQuestionVM);
+            return View(result);
         }
+        #endregion
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -44,20 +50,38 @@ namespace BugFixer.Web.Controllers
 
 
 
-        #region MyRegion
+
+        #region Users Page
         [HttpGet("users-page")]
-        public async Task<IActionResult> UsersPage(string OrderType,bool Reverse, int pageId = 1)
+        public async Task<IActionResult> UsersPage(string OrderType,string userNameFilter, int pageId = 1)
         {
-            FilterUsersPageVM filterUsersPage=new FilterUsersPageVM()
+            ViewBag.UserNameFilter = userNameFilter;
+            ViewBag.OrderTypeFilter = OrderType;
+            FilterUsersPageVM filterUsersPage = new FilterUsersPageVM()
             {
-                Page=pageId,
-                OrderType=OrderType,
-                Reverse=Reverse
+                Page = pageId,
+                OrderType = OrderType,
+                UserName=userNameFilter
+               
             };
-            FilterUsersPageVM usersPage=await _userService.FilterUsersPageServiceAsync(filterUsersPage); 
+            FilterUsersPageVM usersPage = await _userService.FilterUsersPageServiceAsync(filterUsersPage);
+      
             return View(usersPage);
         }
    
+
+        [HttpPost("userspageajax")]
+        public async Task<IActionResult> UsersPageAjax(string OrderType, bool Reverse, int pageId = 1)
+        {
+            FilterUsersPageVM filterUsersPage = new FilterUsersPageVM()
+            {
+                Page = pageId,
+                OrderType = OrderType,
+                Reverse = Reverse
+            };
+            FilterUsersPageVM usersPage = await _userService.FilterUsersPageServiceAsync(filterUsersPage);
+            return View(usersPage);
+        }
 
         #endregion
     }

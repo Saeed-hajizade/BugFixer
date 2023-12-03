@@ -14,7 +14,7 @@ namespace BugFixer.Web.ViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            IEnumerable<QuestionVM> mostRateQuestionList =await _questionService.TopRatedQuestionsService();
+            IEnumerable<QuestionVM> mostRateQuestionList =await _questionService.MostDiscussedQuestionsService();
             return View("/Views/Components/MostRateQuestionsComponent.cshtml", mostRateQuestionList);
         }
     }

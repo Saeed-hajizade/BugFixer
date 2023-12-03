@@ -34,6 +34,16 @@ namespace BugFixer.Data.Repository
                 .FirstOrDefaultAsync(q => q.Id == id);
         }
 
+        public IQueryable<Question> GetQuestionsQueryable()
+        {
+            return _ctx.Questions
+                .Include(q=> q.User)
+                .Include(q=> q.Answers)
+                .ThenInclude(a=> a.User)
+                .Include(q=> q.QuestionRates)
+                .AsQueryable();
+        }
+
         public async Task<IEnumerable<Question>> GetQuestionsAsync()
         {
             return await _ctx.Questions.Include(q => q.User)
@@ -125,6 +135,8 @@ namespace BugFixer.Data.Repository
         }
 
       
+
+
 
 
 

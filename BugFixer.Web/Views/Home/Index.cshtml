@@ -1,4 +1,4 @@
-﻿@model List<BugFixer.Application.ViewModels.Questions.QuestionVM>
+﻿@model BugFixer.Application.ViewModels.Questions.FilterQuestionVM;
 
 @{
     ViewData["Title"] = "صفحه اصلی";
@@ -13,9 +13,9 @@
     <div class="top-layer">
         <a href="/submit-question" class="linkbutton blue"> ثبت پرسش جدید </a>
         <div class="filter-layer">
-            <form action="" method="">
+            <form asp-controller="Home" asp-action="Index" method="get" id="OrderTypeFilterForm">
                 <div class="select-layer">
-                    <select>
+                    <select name="orderType" onchange="handleOrderTypeFilter()">
                         <option> جدیدترین پرسش ها </option>
                         <option> پربحث ترین پرسش ها </option>
                         <option> پرامتیازترین پرسش ها </option>
@@ -31,7 +31,7 @@
     <!-- questions list -->
     <div class="questions-list">
         <!-- item -->
-        @foreach (var item in Model)
+         @foreach (var item in Model.Entities)
         {
             <article class="answered">
                 <h2><a href="/show-question/@item.Id">@item.Title</a></h2>
@@ -51,14 +51,17 @@
                 </ul>
                 <div class="detail">
                     <div class="tags-layer">
+                        @if (item.QuestionTags != null)
+                        {
                         @foreach (var tag in item.QuestionTags)
                         {
                             <a href=""> @tag.Tag </a>
                         }
+                        }
 
                     </div>
                     <div class="left-side">
-                        <span> @item.Rate <i class="icon-star"></i> </span>
+                        <span> @item.QuestionRates.Count() <i class="icon-star"></i> </span>
                         <span> @item.Visit <i class="icon-eye"></i> </span>
                     </div>
                 </div>
@@ -94,6 +97,17 @@
     <!-- /questions list -->
 </div>
 
+@section Landing{
+    <script>
+        const handleOrderTypeFilter = () => {
+            const form = document.getElementById("OrderTypeFilterForm");
+
+            form.submit();
+        }
+    </script>
+}
+
 @section SideBar{
     <partial name="_SideBar" />
         }
+
