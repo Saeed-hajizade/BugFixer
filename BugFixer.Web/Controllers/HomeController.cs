@@ -55,19 +55,19 @@ namespace BugFixer.Web.Controllers
 
         #region Users Page
         [HttpGet("users-page")]
-        public async Task<IActionResult> UsersPage(string OrderType,string userNameFilter, int pageId = 1)
+        public async Task<IActionResult> UsersPage(string OrderType,string UserNameFilter="", int pageId = 1)
         {
-            ViewBag.UserNameFilter = userNameFilter;
-            ViewBag.OrderTypeFilter = OrderType;
+         
             FilterUsersPageVM filterUsersPage = new FilterUsersPageVM()
             {
                 Page = pageId,
                 OrderType = OrderType,
-                UserName=userNameFilter
-               
+                UserName= UserNameFilter
+
             };
             FilterUsersPageVM usersPage = await _userService.FilterUsersPageServiceAsync(filterUsersPage);
-      
+            ViewBag.UserNameFilter = UserNameFilter;
+            ViewBag.OrderTypeFilter = OrderType;
             return View(usersPage);
         }
 

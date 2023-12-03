@@ -48,7 +48,7 @@ namespace BugFixer.Web.Controllers
 
 
         [HttpGet("show-question/{id}")]
-        public async Task<IActionResult> ShowQuestion(int id, int pageId = 1, string orderType = "")
+        public async Task<IActionResult> ShowQuestion(int id, string orderType="New", int pageId = 1)
         {
             QuestionVM question = await _questionService.GetQuestionServiceAsync(id);
             await _questionService.UpdteQuestionVisitService(id);
@@ -63,6 +63,7 @@ namespace BugFixer.Web.Controllers
 
 
             ViewBag.Answers = await _questionService.QuestionAnswersFilter(filter, id);
+            ViewBag.OrderTypeFilter = orderType;
 
             return View(question);
         }

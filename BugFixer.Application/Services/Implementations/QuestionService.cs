@@ -260,12 +260,12 @@ namespace BugFixer.Application.Services.Implementations
 
             switch (filter.OrderType)
             {
-                case "new":
+                case "New":
 
                     result = result.OrderByDescending(a => a.CreateDate);
                     break;
 
-                case "old":
+                case "Old":
 
                     result = result.OrderBy(a => a.CreateDate);
                     break;

@@ -1,8 +1,8 @@
 ﻿@model BugFixer.Application.ViewModels.User.FilterUsersPageVM
 @{
     ViewData["Title"] = "users-page";
-    string usernameFilter = ViewBag.UserNameFilter;
-    string ordertypeFilter = ViewBag.OrderTypeFilter;
+    string usernameFilter = ViewBag.UserNameFilter as string;
+    string ordertypeFilter = ViewBag.OrderTypeFilter as string;
 }
 
 <div class="user-page-style">
@@ -27,19 +27,28 @@
                 <!-- Top -->
                 <div class="top-layer">
                     <form asp-controller="Home" asp-action="UsersPage" method="get" class="search-layer">
-                        <input type="text" id="UserNameFilterInput" name="userNameFilter" placeholder="دنبال چه کاربری میگردی ؟ ">
+
+                        <input type="hidden" value="@Model.Page" name="pageId" />
+                        <input type="hidden" value="@ordertypeFilter" name="OrderType" />
+                
+
+                        <input type="text" id="UserNameFilterInput" value="@usernameFilter" name="userNameFilter" placeholder="دنبال چه کاربری میگردی ؟ ">
+
                         <button type="submit"><i class="icon-search"></i></button>
                     </form>
                     <div class="filter-layer">
                         <form asp-controller="Home" asp-action="UsersPage" method="get" id="OrderFilterForm" >
+                            <input type="hidden" value="@Model.Page" name="pageId" />
+                            <input type="hidden" value="@usernameFilter" name="UserNameFilter" />
+
                             <div class="select-layer">
-                                <select id="OrderByFilter" onchange="handlOrderTypeFilter(event)" name="OrderType">
-                                    <option value="New"> کاربران جدید </option>
-                                    <option value="MostRatedUsers"> امتیازآورترین کاربران </option>
-                                    <option value="MostScoringQuestioners"> امتیازآورترین پرسش کنندگان </option>
+                                <select id="OrderByFilter"  onchange="handlOrderTypeFilter(event)" name="OrderType" >
+                                    <option value="New" selected="@((ordertypeFilter=="New")?true:false)"> کاربران جدید </option>
+                                    <option value="MostRatedUsers" selected="@((ordertypeFilter=="MostRatedUsers")?true:false)"> امتیازآورترین کاربران </option>
+                                    <option value="MostScoringQuestioners" selected="@((ordertypeFilter=="MostScoringQuestioners")?true:false)"> امتیازآورترین پرسش کنندگان </option>
                                 </select>
                             </div>
-                            <button><i class="icon-sort"></i></button>
+                            @* <button><i class="icon-sort"></i></button> *@
                         </form>
                     </div>
                 </div>
@@ -87,13 +96,13 @@
                                         if (@Model.GetCurrentPaging().Page == i)
                                         {
                                             <li class="paginate_button active">
-                                            <a class="page-link cursor-pointer" data-page="0" href="javascript:handlePaginateHref(@i)">@i</a>
+                                            <a class="page-link cursor-pointer" data-page="0" href="/users-page?pageId=@i&UserNameFilter=@usernameFilter&OrderType=@ordertypeFilter">@i</a>
                                             </li>
                                         }
                                         else
                                         {
                                             <li class="paginate_button ">
-                                            <a class="page-link cursor-pointer" data-page="0" href="javascript:handlePaginateHref(@i)">@i</a>
+                                            <a class="page-link cursor-pointer" data-page="0" href="/users-page?pageId=@i&UserNameFilter=@usernameFilter&OrderType=@ordertypeFilter">@i</a>
                                             </li>
                                         }
                                     }
