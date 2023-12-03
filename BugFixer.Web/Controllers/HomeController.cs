@@ -17,9 +17,9 @@ namespace BugFixer.Web.Controllers
 
         #region Constructor
         public HomeController(ILogger<HomeController> logger,
-            IQuestionService questionService,
-            IUserService userService
-            )
+    IQuestionService questionService,
+    IUserService userService
+    )
         {
             _logger = logger;
             _questionService = questionService;
@@ -32,7 +32,7 @@ namespace BugFixer.Web.Controllers
         public async Task<IActionResult> Index(string orderType,int pageId=1)
         {
             FilterQuestionVM filterQuestionVM = new FilterQuestionVM()
-        {
+            {
                 Page=pageId,
                 OrderType=orderType,
             };
@@ -68,7 +68,7 @@ namespace BugFixer.Web.Controllers
       
             return View(usersPage);
         }
-   
+
 
         [HttpPost("userspageajax")]
         public async Task<IActionResult> UsersPageAjax(string OrderType, bool Reverse, int pageId = 1)

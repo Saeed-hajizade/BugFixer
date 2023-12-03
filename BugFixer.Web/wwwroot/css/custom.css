@@ -1,0 +1,14 @@
+﻿.backup-floatin-button-div {
+    position: fixed;
+    bottom: 20px;
+    right: 20px
+}
+
+    .backup-floatin-button-div .bfb {
+        border: none;
+        padding: 20px 20px;
+        border-radius: 100%;
+        background: #FECD32;
+        color: #FFFFFF;
+        font-size: 2rem
+    }

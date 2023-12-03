@@ -6,7 +6,7 @@
 }
 
 <div class="user-page-style">
-
+    
     
     <div class="breadcumb-layer">
         <div class="container">
@@ -18,9 +18,7 @@
     </div>
 
     <div class="users-list page-style">
-
         <div class="container">
-
             <div class="right-col">
                 <header class="top-heading">
                     <h1><a href=""> مشاهده تمامی کاربر ها </a></h1>
@@ -66,8 +64,6 @@
                                                 {
                                                     <a href=""> @skil.SkillTitle </a>
                                                 }
-
-                                           
                                             }
                                         </p>
                                     </div>
@@ -75,7 +71,6 @@
                             </div>
                         }
                         <!-- /item -->
-
                     </div>
                 </div>
                 <!-- /users layer -->
@@ -103,26 +98,19 @@
                                         }
                                     }
                                 </ul>
+                            </div>
                         </div>
-                        <a href="" class="prev-page"> <i class="icon-chevron-left"></i> </a>
                     </div>
-                </div>
                 <!-- /pagination -->
             </div>
-
             <!-- aside -->
             @section SideBar{
-            <partial name="_SideBar" />
+                <partial name="_SideBar" />
             }
             <!-- /aside -->
-            <div class="clearfix"></div>
-
         </div>
-
     </div>
-
 </div>
-
 @section Landing{
     <script>
         const handlePaginateHref = ( pageId) => {
@@ -130,11 +118,9 @@
             window.location.href = `https://localhost:44384/users-page?pageid=${pageId}`;
         }
         const handlOrderTypeFilter = (e) => {
-
             const filterText = e.target.value;
             $("#OrderFilterForm").trigger("submit");
-        }
-        
+
             // $.ajax({
             //     type: "GET",
             //     data: {
@@ -149,7 +135,7 @@
             //             alert("salam")
             //         }
             //     },
-      
+
             // });
         }
         // function handleOrderTypeFilterForm(e) {
