@@ -108,21 +108,21 @@ namespace BugFixer.Application.Services.Implementations
             switch (filterQuestionVM.OrderType)
             {
                 case "New":
-                    query = query.OrderBy(q => q.CreateDate);
+                    query = query.OrderByDescending(q => q.CreateDate);
                     break;
                 case "MostControversial":
-                    query = query.OrderBy(q => q.Answers.Count());
+                    query = query.OrderByDescending(q => q.Answers.Count());
                     break;
                 case "MostOutstanding":
-                    query = query.OrderBy(q => q.QuestionRates.Count());
+                    query = query.OrderByDescending(q => q.QuestionRates.Count());
                     break;
                 case "WeekAgo":
                     DateTime weeAgoTime = DateTime.Today.AddDays(-7);
-                    query = query.OrderBy(q=> q.CreateDate < DateTime.Now && q.CreateDate >=weeAgoTime);
+                    query = query.OrderByDescending(q=> q.CreateDate < DateTime.Now && q.CreateDate >=weeAgoTime);
                     break;
                 case "MonthAgo":
                     DateTime monthAgoTime = DateTime.Today.AddMonths(-1);
-                    query = query.OrderBy(q => q.CreateDate < DateTime.Now && q.CreateDate >= monthAgoTime);
+                    query = query.OrderByDescending(q => q.CreateDate < DateTime.Now && q.CreateDate >= monthAgoTime);
 
                     break;
 

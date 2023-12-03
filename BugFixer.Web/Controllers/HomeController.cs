@@ -36,7 +36,9 @@ namespace BugFixer.Web.Controllers
                 Page=pageId,
                 OrderType=orderType,
             };
+
             FilterQuestionVM result=await _questionService.FilterQuestionsAsync(filterQuestionVM);
+            ViewBag.OrderType = orderType;
             return View(result);
         }
         #endregion
