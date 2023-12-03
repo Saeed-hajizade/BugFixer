@@ -20,9 +20,6 @@ namespace BugFixer.Domain.Interfaces
 
         #endregion
 
-
-
-
         #region Account
         Task<User> RegisterAsync(User user);
         Task<User> LoginUserAsync(string email, string password);
@@ -45,6 +42,11 @@ namespace BugFixer.Domain.Interfaces
 
         #region Users Page
         IQueryable<User> UsersPageQueryable();
+        #endregion
+
+        #region Following
+        Task<int> GetUserFollowingsCountAsync(int userId);
+        Task<int> GetUserFollowersCountAsync(int userId);
         #endregion
     }
 }

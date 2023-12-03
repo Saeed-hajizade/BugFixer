@@ -17,6 +17,7 @@ namespace BugFixer.Application.Services.Interfaces
         Task CreateQuestionServiceAsync(CreateQuestionVM quesion, int userId);
         Task UpdteQuestionVisitService(int questionId);
         Task<QACounts> GetQACountsServiceAsync(int userId);
+        Task<List<QuestionVM>> GetQuestinsBySearchServiceAsync(string search);
         Task<IEnumerable<QuestionVM>> TopRatedQuestionsService();
         Task<IEnumerable<QuestionVM>> MostDiscussedQuestionsService();
         Task<IEnumerable<QuestionTagVM>> MostDiscussedQuestionTagsServiceAsync();
@@ -27,6 +28,7 @@ namespace BugFixer.Application.Services.Interfaces
         Task CreateAnswerServiceAsync(string answerText, int questionId, int userId);
         Task<FilterQuestionAswersVM> QuestionAnswersFilter(FilterQuestionAswersVM filter, int questionId);
         Task UpdateAnswerService(UpdateAnswerVM updateAnswer);
+        Task<List<UserPanelAnswerVM>> GetUserAnswerServiceAsync(int userId);
         Task<UpdateAnswerVM> GetAnswerForUpdateServiceAsync(int answerId);
 
 
@@ -53,6 +55,12 @@ namespace BugFixer.Application.Services.Interfaces
         #region Profile
         Task<IEnumerable<QuestionVM>> ProfileSelectedQuestionsServiceAsync(int id);
         Task<IEnumerable<AnswerVM>> ProfileSelectedAswersServiceAsync(int id);
+
+        #endregion
+
+        #region UserPanel
+
+        Task<List<UserPanelQuestionsVM>> GetUserQuestionsSeviceAsync(int userId);
 
         #endregion
     }

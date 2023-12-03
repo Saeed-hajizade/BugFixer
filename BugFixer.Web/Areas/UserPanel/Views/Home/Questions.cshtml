@@ -1,0 +1,47 @@
+﻿@using BugFixer.Application.Extensions;
+@model List<BugFixer.Application.ViewModels.Questions.UserPanelQuestionsVM>
+
+
+
+
+
+    <section class="questions-layer layer-style">
+        <header><h2> <i>پرسش های من</i> </h2></header>
+
+        <!-- item -->
+    @{
+        foreach(var q in Model)
+        {
+            <article>
+                <h3> <a href="/show-question/@q.Id"> @q.Title </a> <span> @q.CreatedAt.TimeAgo() </span> </h3>
+                <div class="detail">
+                    <span><i class="icon-eye"></i> @q.Visits بازدید </span>
+                    <span><i class="icon-star"></i> @q.RatesCount امتیاز </span>
+                    <span><i class="icon-comment"></i> @q.AnswersCount پاسخ </span>
+                    <span><i class="icon-user-shape"></i> آخرین پاسخ دهنده : <a href=""> @q.LastAnswerUsername </a> </span>
+                </div>
+            </article>
+        }
+
+    }
+        <!-- item -->
+    
+
+      @*  <div class="pagination-layer">
+            <div class="inner">
+                <a href="" class="next-page"> صفحه بعدی </a>
+                <div class="pages">
+                    <a href="" class="page">1</a>
+                    <a href="" class="page">2</a>
+                    <a href="" class="page current">3</a>
+                    <a href="" class="page">4</a>
+                    <a href="" class="page">5</a>
+                    <a href="" class="page">...</a>
+                </div>
+                <a href="" class="prev-page"> صفحه قبلی </a>
+            </div>
+        </div>*@
+
+    </section>
+
+

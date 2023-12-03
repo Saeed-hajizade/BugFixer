@@ -1,0 +1,23 @@
+﻿  @model BugFixer.Application.ViewModels.User.UserFollowingFollowersCountVM
+
+<!-- follow -->
+<div class="follow-layer hidden-xs">
+
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="statistics-section layer-style">
+                <i class="icon-avatar"></i>
+                <span class="number"> @Model.FollowingsCount  نفر </span>
+                <span class="title"> دنبال کنندگان </span>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="statistics-section layer-style">
+                <i class="icon-user-2"></i>
+                <span class="number"> @Model.FollowersCount  نفر </span>
+                <span class="title"> دنبال شونده ها </span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /follow -->

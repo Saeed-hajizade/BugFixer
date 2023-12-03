@@ -68,6 +68,18 @@ namespace BugFixer.Data.Repository
         {
             _ctx.Questions.Update(question);
         }
+
+        public async Task<List<Question>> GetQuestinsBySearchAsync(string search)
+        {
+            return await _ctx.Questions
+                .Include(q => q.QuestionTags)
+                .Include(q => q.User)
+                .Include(q => q.TrueAnswer)
+                .Include(q => q.Answers)
+                .Include(q => q.QuestionRates)
+                .Where(q => q.Title.ToLower().Contains(search) || q.QuestionTags.Any(qt => qt.Tag.ToLower().Contains(search)))
+                .ToListAsync();
+        }
         public async Task<IEnumerable<Question>> TopRatedQuestions()
         {
             DateTime lastMonthAgo = DateTime.Today.AddMonths(-1);
@@ -114,6 +126,16 @@ namespace BugFixer.Data.Repository
                 .SelectMany(q => q.Answers)
                 .Count();
         }
+        public async Task<List<Answer>> GetUserAnswersAsync(int userId)
+        {
+            return await _ctx.Answers
+                .Where(a => a.UserId ==  userId)
+                .Include(a => a.Question)
+                .ThenInclude(q => q.QuestionRates)
+                .Include(a => a.User)
+                .ToListAsync();
+
+        }
         public void UpdateAnswer(Answer answer)
         {
             _ctx.Answers.Update(answer);
@@ -134,13 +156,25 @@ namespace BugFixer.Data.Repository
 
         }
 
-      
 
 
 
 
 
 
+
+        #endregion
+
+# region userPanel
+        public async Task<List<Question>> GetUserQuestionsAsync(int userId)
+        {
+            return await _ctx.Questions
+                .Where(q => q.UserId == userId)
+                .Include(q => q.Answers)
+                .ThenInclude(a => a.User)
+                .Include(q => q.QuestionRates)
+                .ToListAsync();
+        }
         #endregion
     }
 }

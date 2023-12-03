@@ -21,13 +21,12 @@ namespace BugFixer.Domain.Interfaces
         Task CreateQuestionTagAsync(QuestionTag questionTag);
         void UpdateQuestion(Question question);
         Task<int> GetUserQuestionsCountAsync(int userId);
+        Task<List<Question>> GetQuestinsBySearchAsync(string search);
         Task<IEnumerable<Question>> TopRatedQuestions();
         Task<IEnumerable<Question>> MostDiscussedQuestions();
         Task<IEnumerable<QuestionTag>> MostDiscussedQuestionTagsAsync();
 
         #endregion
-
-
 
         #region Answer Methods
         Task CreateAnswerAsync(Answer answer);
@@ -35,6 +34,7 @@ namespace BugFixer.Domain.Interfaces
         void UpdateAnswer(Answer answer);
         Task<Answer> GetAnswerById(int id);
         Task<int> GetUserAnswersCountAsync(int userId);
+        Task<List<Answer>> GetUserAnswersAsync(int userId);
 
         #endregion
 
@@ -43,6 +43,10 @@ namespace BugFixer.Domain.Interfaces
 
         Task<IEnumerable<Answer>> ProfileSelectedAswersAsync(int id);
 
+        #endregion
+
+        #region UserPanel      
+        Task<List<Question>> GetUserQuestionsAsync(int userId);
         #endregion
 
     }

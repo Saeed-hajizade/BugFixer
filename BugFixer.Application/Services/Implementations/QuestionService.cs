@@ -157,12 +157,44 @@ namespace BugFixer.Application.Services.Implementations
             };
         }
 
+        public async Task<List<QuestionVM>> GetQuestinsBySearchServiceAsync(string search)
+        {
+            string validatedStringSearch = search.ToLower().Trim();
+            var result = await _questionRepository.GetQuestinsBySearchAsync(validatedStringSearch);
+
+            return result.Select(question => new QuestionVM()
+            {
+                Id = question.Id,
+                Title = question.Title,
+                Text = question.Text,
+                CreateDate = question.CreateDate,
+                Visit = question.Visit,
+                TrueAnswer = new TrueAnswerVM
+                {
+                    QuestionId = question.TrueAnswer?.QuestionId != null ? question.TrueAnswer.QuestionId : 0,
+                    AnswerId = question.TrueAnswer?.AnswerId != null ? question.TrueAnswer.AnswerId : 0
+                },
+                QuestionTags = question.QuestionTags?.Select(q => new QuestionTagVM()
+                {
+                    Tag = q.Tag,
+                }).ToList(),
+
+                User = question.User,
+                Answers = question.Answers,
+                QuestionRates = question.QuestionRates?.Select(r => new QuestionRateVM
+                {
+                    QuestionId = r.QuestionId,
+                    UserId = r.UserId
+                })
+            }).ToList();
+        }
+
         public  async Task<IEnumerable<QuestionVM>> TopRatedQuestionsService()
         {
             IEnumerable<Question> questions =await  _questionRepository.TopRatedQuestions();
             return questions.Select(q => new QuestionVM()
             {
-                Rate=q.QuestionRates.Count(),
+                Rate=q.QuestionRates == null ? 0 : q.QuestionRates.Count(),
                 Id=q.Id,
                 Title=q.Title,
             }).ToList();
@@ -272,10 +304,25 @@ namespace BugFixer.Application.Services.Implementations
             };
         }
 
+        public async Task<List<UserPanelAnswerVM>> GetUserAnswerServiceAsync(int userId)
+        {
+            var answers = await _questionRepository.GetUserAnswersAsync(userId);
+            return answers.Select(a => new UserPanelAnswerVM()
+            {
+                Id = a.Question.Id,
+                Title = a.Text,
+                CreatedAt = a.CreateDate,
+                AnswersCount = a.Question.Answers == null ? 0 : a.Question.Answers.Count(),
+                RatesCount = a.Question.QuestionRates == null ? 0 : a.Question.QuestionRates.Count(),
+                Visits = a.Question.Visit,
+                LastAnswerUsername = a.Question.Answers.Count() == 0 ? "بدون پاسخ" : a.Question.Answers.LastOrDefault().User.UserName,
+            }).ToList();
+        }
+
         #endregion
 
         #region QuestionRate Methods
-     
+
         public async Task<bool> HandleQuestionRateServiceAsync(int qID, int userID)
         {
             var questionRate = await _questionRateRepository.GetQuestionRateAsync(qID, userID);
@@ -354,10 +401,23 @@ namespace BugFixer.Application.Services.Implementations
             }).ToList();
         }
 
-      
+        #endregion
 
+        #region UserPanel
 
-
+        public async Task<List<UserPanelQuestionsVM>> GetUserQuestionsSeviceAsync(int userId)
+        {
+            var questions = await _questionRepository.GetUserQuestionsAsync(userId);
+            return questions.Select(q => new UserPanelQuestionsVM() { 
+                Id = q.Id,
+                Title = q.Title,
+                CreatedAt= q.CreateDate,
+                AnswersCount=q.Answers == null ? 0 : q.Answers.Count(),
+                RatesCount=q.QuestionRates == null ? 0 : q.QuestionRates.Count(),
+                Visits=q.Visit,
+                LastAnswerUsername= q.Answers.Count() == 0 ? "بدون پاسخ" : q.Answers.LastOrDefault().User.UserName,
+            }).ToList();
+        }
 
 
 

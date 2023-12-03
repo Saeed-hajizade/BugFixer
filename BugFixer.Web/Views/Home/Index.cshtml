@@ -37,10 +37,10 @@
                 <h2><a href="/show-question/@item.Id">@item.Title</a></h2>
                 <span> @item.Answers.Count() <i class="icon-comment-1"></i> </span>
                 <ul>
-                    <li> پرسیده شده توسط  <a href="">  @item.User.UserName </a> در 1  ساعت پیش </li>
+                    <li> پرسیده شده توسط  <a href="">  @item.User.UserName </a> @item.CreateDate.TimeAgo()</li>
                     @if (item.Answers.Any())
                     {
-                        <li> آخرین پاسخ توسط <a href=""> @item.Answers.FirstOrDefault().User.UserName </a> در 1 دقیقه پسش </li>
+                        <li> آخرین پاسخ توسط <a href=""> @item.Answers.FirstOrDefault().User.UserName </a>@item.Answers.FirstOrDefault().CreateDate.TimeAgo() </li>
                     }
                     else
                     {
