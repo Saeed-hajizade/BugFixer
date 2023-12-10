@@ -10,6 +10,9 @@ namespace BugFixer.Application.ViewModels.Questions
 {
     public class FilterQuestionVM:BasePaging<Question>
     {
+
         public string OrderType { get; set; }
+
+
     }
 }

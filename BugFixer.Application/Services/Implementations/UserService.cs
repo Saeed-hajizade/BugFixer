@@ -52,7 +52,7 @@ namespace BugFixer.Application.Services.Implementations
         {
             IQueryable<User> query = _userRepository.UserListForFilter();
 
-            if (!string.IsNullOrEmpty(filter.UserName))
+            if (!string.IsNullOrEmpty(filter.UserName)) 
             {
                 query = query.Where(u => EF.Functions.Like(u.UserName, $"%{filter.UserName.Trim().ToLower()}%"));
             }
