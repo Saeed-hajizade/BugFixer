@@ -1,10 +1,14 @@
-﻿@model List<BugFixer.Application.ViewModels.Questions.QuestionVM>
+﻿@using BugFixer.Application.Extensions;
+@model List<BugFixer.Application.ViewModels.Questions.QuestionVM>
+@{
+    Layout = "_SecondLayout";
+}
 <div class="user-page-style">
 
     <div class="breadcumb-layer">
         <div class="container">
             <ul itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
-                <li itemtype="http://schema.org/ListItem" itemscope="" itemprop="itemListElement"><a href="" itemprop="item"><span itemprop="name"> باگ فیکسر </span></a></li>
+                <li itemtype="http://schema.org/ListItem" itemscope="" itemprop="itemListElement"><a href="/" itemprop="item"><span itemprop="name"> باگ فیکسر </span></a></li>
                 <li itemtype="http://schema.org/ListItem" itemscope="" itemprop="itemListElement"><a href="" itemprop="item"><span itemprop="name"> پرسش های javascript </span></a></li>
             </ul>
         </div>
@@ -13,197 +17,90 @@
     <div class="tags-page page-style">
 
         <div class="container">
-
-     
-                        <header class="top-heading">
-                            <h1><a href=""> مشاهده پرسش های مربوط به  javascript </a></h1>
-                            <span> <i>5.3K</i> پرسش ثبت شده  </span>
-                        </header>
-                        <!-- Top -->
-                        <div class="top-layer">
-                            <form action="" class="search-layer">
-                                <input type="text" name="" placeholder="دنبال چه سوالی میگردی ؟ ">
-                                <button><i class="icon-search"></i></button>
-                            </form>
-                            <div class="filter-layer">
-                                <form action="" method="">
-                                    <div class="select-layer">
-                                        <select>
-                                            <option> جدیدترین پرسش ها </option>
-                                            <option> پربحث ترین پرسش ها </option>
-                                            <option> پرامتیازترین پرسش ها </option>
-                                            <option> پر رای ترین پرسش ها </option>
-                                            <option> پرسش های یک هفته اخیر  </option>
-                                            <option> پرسش های یک ماه اخیر  </option>
-                                        </select>
-                                    </div>
-                                    <button><i class="icon-sort"></i></button>
-                                </form>
+            <!-- questions -->
+            <div class="questions-layer">
+                <!-- Top -->
+                <div class="top-layer">
+                    <a href="/submit-question" class="linkbutton blue"> ثبت پرسش جدید </a>
+                    <div class="filter-layer">
+                        <form action="" method="">
+                            <div class="select-layer">
+                                <select>
+                                    <option> جدیدترین پرسش ها </option>
+                                    <option> پربحث ترین پرسش ها </option>
+                                    <option> پرامتیازترین پرسش ها </option>
+                                    <option> پرسش های یک هفته اخیر  </option>
+                                    <option> پرسش های یک ماه اخیر  </option>
+                                </select>
                             </div>
-                        </div>
-                        <!-- /Top -->
-
-                        <!-- questions -->
-                        <div class="questions-layer">
-                            <!-- questions list -->
-                    <!-- questions list -->
-                    <div class="questions-list">
-                        <!-- item -->
-                        @foreach (var item in Model)
+                            <button><i class="icon-sort"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <!-- /Top -->
+                <!-- questions list -->
+                <div class="questions-list">
+                    @{
+                        if(Model.Count != 0 && Model  != null)
                         {
-                            <article class="answered">
-                                <h2><a href="/show-question/@item.Id">@item.Title</a></h2>
-                                <span> 236 <i class="icon-comment-1"></i> </span>
-                                <ul>
-                                    <li> پرسیده شده توسط  <a href="">  @item.User.UserName </a> در 1  ساعت پیش </li>
-                                    @if (item.Answers.Any())
-                                    {
-                                        <li> آخرین پاسخ توسط <a href=""> @item.Answers.FirstOrDefault().User.UserName </a> در 1 دقیقه پسش </li>
-                                    }
-                                    else
-                                    {
-                                        <li>
-                                            بدون پاسخ
-                                        </li>
-                                    }
-                                </ul>
-                                <div class="detail">
-                                    <div class="tags-layer">
-                                        @foreach (var tag in item.QuestionTags)
+                            foreach (var item in Model)
+                            {
+                                <article class="answered">
+                                    <h2><a href="/show-question/@item.Id">@item.Title</a></h2>
+                                    <span> @item.Answers.Count() <i class="icon-comment-1"></i> </span>
+                                    <ul>
+                                        <li> پرسیده شده توسط  <a href="">  @item.User.UserName </a> @item.CreateDate.TimeAgo()</li>
+                                        @if (item.Answers.Any())
                                         {
-                                            <a href=""> @tag.Tag </a>
+                                            <li> آخرین پاسخ توسط <a href=""> @item.Answers.FirstOrDefault().User.UserName </a>@item.Answers.FirstOrDefault().CreateDate.TimeAgo() </li>
                                         }
+                                        else
+                                        {
+                                            <li>
+                                                بدون پاسخ
+                                            </li>
+                                        }
+                                    </ul>
+                                    <div class="detail">
+                                        <div class="tags-layer">
+                                            @foreach (var tag in item.QuestionTags)
+                                            {
+                                                <a href=""> @tag.Tag </a>
+                                            }
 
+                                        </div>
+                                        <div class="left-side">
+                                            <span> @item.Rate <i class="icon-star"></i> </span>
+                                            <span> @item.Visit <i class="icon-eye"></i> </span>
+                                        </div>
                                     </div>
-                                    <div class="left-side">
-                                        <span> 983 <i class="icon-star"></i> </span>
-                                        <span> 264 <i class="icon-eye"></i> </span>
-                                    </div>
-                                </div>
-                            </article>
+                                </article>
+                            }
                         }
-                    </div>
-                    <!-- /questions list -->
-                        <!-- /questions -->                         
-
-                        <!-- pagination -->
-                        <div class="pagination-layer">
-                            <div class="inner">
-                                <a href="" class="next-page"> <i class="icon-chevron-right"></i> </a>
-                                <div class="pages">
-                                    <a href="" class="page">1</a>
-                                    <a href="" class="page">2</a>
-                                    <a href="" class="page current">3</a>
-                                    <a href="" class="page">4</a>
-                                    <a href="" class="page">5</a>
-                                    <a href="" class="page">...</a> 
-                                </div>
-                                <a href="" class="prev-page"> <i class="icon-chevron-left"></i> </a>
-                            </div>
-                        </div>
-                        <!-- /pagination -->
-                    </div>
-
-
-
+                        else
+                        {
+                            <div  class="alert alert-warning">نتیجه ای یافت نشد.</div>
+                        }
+                    }
+                </div>
+                <!-- /questions list -->
+            </div>
+            <!-- /questions -->
             <!-- aside -->
             <aside>
-
-                <a href="" class="ask-question"> ثبت پرسش جدید </a>
 
                 <!-- most popular post -->
                 <section class="most-popular-questions">
 
-                    <article>
-                        <header><h2> پر امتیازترین پرسش های یک ماه اخیر </h2></header>
-                        <ul>
-                            <li>
-                                <span> 10K <i class="icon-star"></i></span>
-                                <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                            </li>
-                            <li>
-                                <span> 3K <i class="icon-star"></i></span>
-                                <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                            </li>
-                            <li>
-                                <span> 6K <i class="icon-star"></i></span>
-                                <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                            </li>
-                            <li>
-                                <span> 2K <i class="icon-star"></i></span>
-                                <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                            </li>
-                            <li>
-                                <span> 8K <i class="icon-star"></i></span>
-                                <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                            </li>
-                        </ul>
-                    </article>
-
-                    <article>
-                        <header><h2> پر بحث ترین پرسش های یک ماه اخیر </h2></header>
-                        <ul>
-                            <li>
-                                <span> 8.5K <i class="icon-comment"></i></span>
-                                <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                            </li>
-                            <li>
-                                <span> 7K <i class="icon-comment"></i></span>
-                                <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                            </li>
-                            <li>
-                                <span> 11K <i class="icon-comment"></i></span>
-                                <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                            </li>
-                            <li>
-                                <span> 134K <i class="icon-comment"></i></span>
-                                <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                            </li>
-                            <li>
-                                <span> 8K <i class="icon-comment"></i></span>
-                                <h2><a href=""> معرفی بهترین و ساده ترین فریم ورک php برای پیاده سازی فروشگاه اینترنتی </a></h2>
-                            </li>
-                        </ul>
-                    </article>
+                    @await Component.InvokeAsync("MostRateQuestions")
+                    @await Component.InvokeAsync("TopQuestions")
 
                 </section>
                 <!-- /most popular post -->
                 <!-- most controversial tags -->
                 <section class="most-controversial-tags">
                     <header><h2> پر بحث ترین تگ ها </h2></header>
-                    <div class="tags-layer">
-                        <a href=""> Jquery </a>
-                        <a href=""> php </a>
-                        <a href=""> Javascript </a>
-                        <a href=""> asp </a>
-                        <a href=""> mvc </a>
-                        <a href=""> C# </a>
-                        <a href=""> woocommerce </a>
-                        <a href=""> Framework </a>
-                        <a href=""> Jquery </a>
-                        <a href=""> php </a>
-                        <a href=""> Framework </a>
-                        <a href=""> Jquery </a>
-                        <a href=""> php </a>
-                        <a href=""> Javascript </a>
-                        <a href=""> asp </a>
-                        <a href=""> mvc </a>
-                        <a href=""> C# </a>
-                        <a href=""> woocommerce </a>
-                        <a href=""> Framework </a>
-                        <a href=""> Jquery </a>
-                        <a href=""> Javascript </a>
-                        <a href=""> Javascript </a>
-                        <a href=""> asp </a>
-                        <a href=""> mvc </a>
-                        <a href=""> C# </a>
-                        <a href=""> Jquery </a>
-                        <a href=""> Javascript </a>
-                        <a href=""> Javascript </a>
-                        <a href=""> asp </a>
-                        <a href=""> mvc </a>
-                        <a href=""> C# </a>
-                    </div>
+                    @await Component.InvokeAsync("MostDiscussedQuestionTags")
                 </section>
                 <!-- /most controversial posts -->
                 <!-- banner -->
@@ -219,7 +116,6 @@
 
             </aside>
             <!-- /aside -->
-            <div class="clearfix"></div>  <!-- aside -->
-
-</div>
-</div>
+            <div class="clearfix"></div>
+        </div>
+    </div>

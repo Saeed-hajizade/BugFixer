@@ -147,6 +147,24 @@ namespace BugFixer.Web.Areas.UserPanel.Controllers
 
         #endregion
 
+        #region followingAndFollowers
+
+        [Route("/userr-panel/followings")]
+        public  async Task<IActionResult> Followings()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return View();
+        }
+
+        [Route("/userr-panel/followers")]
+        public  async Task<IActionResult> Followers()
+        {
+            int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return View();
+        }
+
+        #endregion
+
         #endregion
     }
 }

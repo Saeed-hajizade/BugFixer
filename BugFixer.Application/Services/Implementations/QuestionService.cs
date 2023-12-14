@@ -15,7 +15,7 @@ namespace BugFixer.Application.Services.Implementations
         {
             _questionRepository = questionRepository;
             _questionRateRepository = questionRateRepository;
-            _trueAnswerRepository = trueAnswerRepository;   
+            _trueAnswerRepository = trueAnswerRepository;
         }
 
 
@@ -62,9 +62,10 @@ namespace BugFixer.Application.Services.Implementations
                 Text = question.Text,
                 CreateDate = question.CreateDate,
                 Visit = question.Visit,
-                TrueAnswer= new TrueAnswerVM { 
+                TrueAnswer = new TrueAnswerVM
+                {
                     QuestionId = question.TrueAnswer?.QuestionId != null ? question.TrueAnswer.QuestionId : 0,
-                    AnswerId = question.TrueAnswer?.AnswerId !=null? question.TrueAnswer.AnswerId:0
+                    AnswerId = question.TrueAnswer?.AnswerId != null ? question.TrueAnswer.AnswerId : 0
                 },
                 QuestionTags = question.QuestionTags?.Select(q => new QuestionTagVM()
                 {
@@ -76,8 +77,9 @@ namespace BugFixer.Application.Services.Implementations
                 QuestionRates = question.QuestionRates?.Select(r => new QuestionRateVM
                 {
                     QuestionId = r.QuestionId,
-                    UserId=r.UserId
-                })
+                    UserId = r.UserId
+                }),
+                Rate = question.QuestionRates != null ? question.QuestionRates.Count() : 0,
             };
         }
 
@@ -92,12 +94,13 @@ namespace BugFixer.Application.Services.Implementations
                 Title = q.Title,
                 User = q.User,
                 Answers = q.Answers,
-                Visit= q.Visit,
+                Visit = q.Visit,
                 QuestionTags = q.QuestionTags.Select(a => new QuestionTagVM()
                 {
                     Tag = a.Tag,
                 }),
-                Rate=q.QuestionRates.Count()
+                Rate = q.QuestionRates.Count(),
+                CreateDate = q.CreateDate,
             }).ToList();
         }
 
@@ -154,32 +157,30 @@ namespace BugFixer.Application.Services.Implementations
                 {
                     QuestionId = r.QuestionId,
                     UserId = r.UserId
-                })
+                }),
+                Rate = question.QuestionRates != null ? question.QuestionRates.Count() : 0,
+
             }).ToList();
         }
 
-        public  async Task<IEnumerable<QuestionVM>> TopRatedQuestionsService()
+        public async Task<IEnumerable<QuestionVM>> TopRatedQuestionsService()
         {
-            IEnumerable<Question> questions =await  _questionRepository.TopRatedQuestions();
+            IEnumerable<Question> questions = await _questionRepository.TopRatedQuestions();
             return questions.Select(q => new QuestionVM()
             {
-                Rate=q.QuestionRates == null ? 0 : q.QuestionRates.Count(),
-                Id=q.Id,
-                Title=q.Title,
+                Rate = q.QuestionRates == null ? 0 : q.QuestionRates.Count(),
+                Id = q.Id,
+                Title = q.Title,
             }).ToList();
-        
-
-
-          
         }
 
 
-        public  async Task<IEnumerable<QuestionVM>> MostDiscussedQuestionsService()
+        public async Task<IEnumerable<QuestionVM>> MostDiscussedQuestionsService()
         {
             IEnumerable<Question> questions = await _questionRepository.MostDiscussedQuestions();
             return questions.Select(q => new QuestionVM()
             {
-                NumberOfAnswers=q.Answers == null ? 0 : q.Answers.Count(),
+                NumberOfAnswers = q.Answers == null ? 0 : q.Answers.Count(),
                 Id = q.Id,
                 Title = q.Title,
             }).ToList();
@@ -190,11 +191,15 @@ namespace BugFixer.Application.Services.Implementations
             IEnumerable<QuestionTag> questionTags = await _questionRepository.MostDiscussedQuestionTagsAsync();
             return questionTags.Select(qt => new QuestionTagVM()
             {
-                Id=qt.Id,
-                Tag=qt.Tag,
+                Id = qt.Id,
+                Tag = qt.Tag,
             }).ToList();
         }
 
+        public async Task<int> GetQuestionsCountServiceAsync()
+        {
+            return await _questionRepository.GetQuestionsCountAsync();
+        }
         #endregion
 
 
@@ -273,7 +278,7 @@ namespace BugFixer.Application.Services.Implementations
             };
         }
 
-      
+
         #endregion
 
         #region QuestionRate Methods
@@ -282,7 +287,7 @@ namespace BugFixer.Application.Services.Implementations
         {
             var questionRate = await _questionRateRepository.GetQuestionRateAsync(qID, userID);
             if (questionRate != null)
-            {             
+            {
                 _questionRateRepository.DeleteQuestionRate(questionRate);
                 await _questionRepository.SavechangeAsync();
                 return false;
@@ -303,14 +308,28 @@ namespace BugFixer.Application.Services.Implementations
         #endregion
 
         #region TrueAnswer
-        public async Task HandleTrueAnswerServiceAsync(int qID, int aID)
+        public async Task HandleTrueAnswerServiceAsync(int qID, int aID, int userID)
         {
             var trueAsnwer = await _trueAnswerRepository.GetTrueAnswerAsync(qID);
-            if(trueAsnwer != null)
+            var question = await _questionRepository.GetQuestionAsync(qID);
+            if (question.UserId == userID)
             {
-                if(trueAsnwer.AnswerId != aID)
+                if (trueAsnwer != null)
                 {
-                    _trueAnswerRepository.DeleteTrueAnswerAsync(trueAsnwer);
+                    if (trueAsnwer.AnswerId != aID)
+                    {
+                        _trueAnswerRepository.DeleteTrueAnswerAsync(trueAsnwer);
+                        var ta = new TrueAnswer
+                        {
+                            AnswerId = aID,
+                            QuestionId = qID,
+                        };
+                        await _trueAnswerRepository.CreateTrueAnswerAsync(ta);
+                        await _questionRepository.SavechangeAsync();
+                    }
+                }
+                else
+                {
                     var ta = new TrueAnswer
                     {
                         AnswerId = aID,
@@ -320,16 +339,7 @@ namespace BugFixer.Application.Services.Implementations
                     await _questionRepository.SavechangeAsync();
                 }
             }
-            else
-            {
-                var ta = new TrueAnswer
-                {
-                    AnswerId = aID,
-                    QuestionId = qID,
-                };
-                await _trueAnswerRepository.CreateTrueAnswerAsync(ta);
-                await _questionRepository.SavechangeAsync();
-            }
+
         }
         #endregion
 
@@ -337,7 +347,7 @@ namespace BugFixer.Application.Services.Implementations
         public async Task<IEnumerable<QuestionVM>> ProfileSelectedQuestionsServiceAsync(int id)
         {
             IEnumerable<Question> questions = await _questionRepository.ProfileSelectedQuestionsAsync(id);
- 
+
             return questions.Select(q => new QuestionVM()
             {
                 Title = q.Title,
@@ -363,14 +373,15 @@ namespace BugFixer.Application.Services.Implementations
         public async Task<List<UserPanelQuestionsVM>> GetUserQuestionsSeviceAsync(int userId)
         {
             var questions = await _questionRepository.GetUserQuestionsAsync(userId);
-            return questions.Select(q => new UserPanelQuestionsVM() { 
+            return questions.Select(q => new UserPanelQuestionsVM()
+            {
                 Id = q.Id,
                 Title = q.Title,
-                CreatedAt= q.CreateDate,
-                AnswersCount=q.Answers == null ? 0 : q.Answers.Count(),
-                RatesCount=q.QuestionRates == null ? 0 : q.QuestionRates.Count(),
-                Visits=q.Visit,
-                LastAnswerUsername= q.Answers.Count() == 0 ? "بدون پاسخ" : q.Answers.LastOrDefault().User.UserName,
+                CreatedAt = q.CreateDate,
+                AnswersCount = q.Answers == null ? 0 : q.Answers.Count(),
+                RatesCount = q.QuestionRates == null ? 0 : q.QuestionRates.Count(),
+                Visits = q.Visit,
+                LastAnswerUsername = q.Answers.Count() == 0 ? "بدون پاسخ" : q.Answers.LastOrDefault().User.UserName,
             }).ToList();
         }
 

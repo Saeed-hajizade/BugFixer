@@ -1,14 +1,18 @@
 ﻿@model List<BugFixer.Application.ViewModels.Questions.QuestionVM>
+@{
+    var questions = Model;
+    questions.OrderByDescending(x => x.Rate);
+}
 <article>
     <header><h2> پر امتیازترین پرسش های یک ماه اخیر </h2></header>
     <ul>
-        @foreach(var question in Model)
+        @foreach(var question in questions)
         {
             <li>
                 <span> @question.Rate <i class="icon-star"></i></span>
                 <h2><a href="/show-question/@question.Id"> @question.Title </a></h2>
             </li>
         }
-
+      
     </ul>
 </article>

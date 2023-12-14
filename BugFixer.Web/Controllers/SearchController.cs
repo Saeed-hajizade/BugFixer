@@ -1,5 +1,7 @@
 ﻿using BugFixer.Application.Services.Interfaces;
+using BugFixer.Application.ViewModels.Questions;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace BugFixer.Web.Controllers
 {
@@ -10,10 +12,26 @@ namespace BugFixer.Web.Controllers
         {
             _questionService = questionService;
         }
-        public async Task<IActionResult>  Index(string searchParameter)
+        [HttpGet]
+        public async Task<IActionResult> Index(string searchParameter)
         {
             var result = await _questionService.GetQuestinsBySearchServiceAsync(searchParameter);
+         
             return View(result);
         }
+
+        //public IActionResult ResultPage()
+        //{
+
+        //    var serializedResult = TempData["SearchResult"] as string;
+
+        //    // Deserialize the result back to its original type
+        //    if(serializedResult != null)
+        //    {
+        //        var result = JsonConvert.DeserializeObject<List<QuestionVM>>(serializedResult);
+        //    return View(result);
+        //    }
+        //    return View(null);
+        //}
     }
 }

@@ -5,10 +5,11 @@
         @foreach (var question in Model)
         {
             <li>
-                <span> @question.NumberOfAnswers <i class="icon-star"></i></span>
+                <span> @question.NumberOfAnswers <i class="icon-comment"></i></span>
                 <h2><a href="/show-question/@question.Id"> @question.Title </a></h2>
             </li>
         }
+       
 
     </ul>
 </article>

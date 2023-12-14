@@ -46,9 +46,9 @@ namespace BugFixer.Data.Repository
         }
 
 
-        public  IQueryable<User> UserListForFilter()
+        public IQueryable<User> UserListForFilter()
         {
-            return  _ctx.Users.AsQueryable();
+            return _ctx.Users.AsQueryable();
         }
         #endregion
 
@@ -93,7 +93,7 @@ namespace BugFixer.Data.Repository
             return user;
         }
 
-      public async Task<User> GetUserForEditByIdAsync(int id)
+        public async Task<User> GetUserForEditByIdAsync(int id)
         {
             var user = await _ctx.Users.FindAsync(id);
             return user;
@@ -123,7 +123,7 @@ namespace BugFixer.Data.Repository
 
         public async Task<IEnumerable<Following>> Followins()
         {
-           return await _ctx.Followings.ToListAsync();
+            return await _ctx.Followings.ToListAsync();
         }
 
         public async Task<Following> GetFollowingAsync(int userId, int followingId)
@@ -140,13 +140,13 @@ namespace BugFixer.Data.Repository
         #endregion
 
         #region Users Page
-        public  IQueryable<User> UsersPageQueryable()
+        public IQueryable<User> UsersPageQueryable()
         {
-            return  _ctx.Users.Include(u=> u.Answers)
-                .ThenInclude(a=> a.TrueAnswer)
-                .Include(u=> u.Questions)
-                .Include(u=> u.Resume)
-                .ThenInclude(r=> r.ResumeSkills)
+            return _ctx.Users.Include(u => u.Answers)
+                .ThenInclude(a => a.TrueAnswer)
+                .Include(u => u.Questions)
+                .Include(u => u.Resume)
+                .ThenInclude(r => r.ResumeSkills)
                 .AsQueryable();
         }
 
@@ -166,6 +166,20 @@ namespace BugFixer.Data.Repository
             return await _ctx.Followings
                     .Where(f => f.UserId == userId).CountAsync();
         }
+
+        //public async Task<List<Following>> GetUserFollowingsAsync(int userId)
+        //{
+        //    return await _ctx.Followings
+        //        .Where(f =>  f.FollowingId == userId)
+        //        .ToListAsync();
+        //}
+        //public async Task<List<Following>> GetUserFollowersAsync(int userId)
+        //{
+        //    return await _ctx.Followings
+        //     .Where(f => f.UserId == userId)
+        //     .Include(f => f.)
+        //     .ToListAsync();
+        //}
 
         #endregion
     }

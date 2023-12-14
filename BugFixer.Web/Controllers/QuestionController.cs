@@ -25,6 +25,7 @@ namespace BugFixer.Web.Controllers
         [HttpGet("submit-question")]
         public async Task<IActionResult> Create()
         {
+            ViewBag.Count = await _questionService.GetQuestionsCountServiceAsync();
             return View();
         }
 
@@ -39,6 +40,7 @@ namespace BugFixer.Web.Controllers
                 return View(create);
             }
             await _questionService.CreateQuestionServiceAsync(create, userId);
+         
             return Redirect("/");
         }
 
@@ -57,8 +59,6 @@ namespace BugFixer.Web.Controllers
             {
                 Page = pageId,
                 OrderType = orderType,
-
-
             };
 
 
@@ -124,7 +124,8 @@ namespace BugFixer.Web.Controllers
         [Authorize]
         public async Task<IActionResult> AddTrueAnswer(int questionID, int answerID)
         {
-            await _questionService.HandleTrueAnswerServiceAsync(questionID, answerID);
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await _questionService.HandleTrueAnswerServiceAsync(questionID, answerID, userId);
             return Json(new { taStatus = true });
         }
 

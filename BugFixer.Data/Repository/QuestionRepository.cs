@@ -23,7 +23,7 @@ namespace BugFixer.Data.Repository
         }
         public async Task<Question> GetQuestionAsync(int id)
         {
-            return await _ctx.Questions.Include(q => q.QuestionTags)                
+            return await _ctx.Questions.Include(q => q.QuestionTags)
                 .Include(q => q.QuestionRates)
                 .Include(q => q.Answers)
                 .Include(q => q.TrueAnswer)
@@ -39,11 +39,11 @@ namespace BugFixer.Data.Repository
             return await _ctx.Questions.Include(q => q.User)
                 .Include(q => q.QuestionTags)
                 .Include(q => q.Answers)
-                .ThenInclude(a => a.User).Include(q=> q.QuestionRates)
+                .ThenInclude(a => a.User).Include(q => q.QuestionRates)
                 .ToListAsync();
         }
 
-   public async Task<int> GetUserQuestionsCountAsync(int userId)
+        public async Task<int> GetUserQuestionsCountAsync(int userId)
         {
             return _ctx.Questions
                 .Where(q => q.UserId == userId)
@@ -74,12 +74,14 @@ namespace BugFixer.Data.Repository
         {
             DateTime lastMonthAgo = DateTime.Today.AddMonths(-1);
             return await _ctx.Questions.Where(q => q.CreateDate < DateTime.Now && q.CreateDate >= lastMonthAgo)
+                .Include(q => q.QuestionRates)
                 .OrderByDescending(q => q.QuestionRates.Count()).Take(8).ToListAsync();
         }
         public async Task<IEnumerable<Question>> MostDiscussedQuestions()
         {
             DateTime lastMonthAgo = DateTime.Today.AddMonths(-1);
-            return await _ctx.Questions.Where(q=> q.CreateDate < DateTime.Now && q.CreateDate >= lastMonthAgo)
+            return await _ctx.Questions.Where(q => q.CreateDate < DateTime.Now && q.CreateDate >= lastMonthAgo)
+                .Include(q => q.Answers)
              .OrderByDescending(q => q.Answers.Count()).Take(8).ToListAsync();
         }
         public async Task<IEnumerable<QuestionTag>> MostDiscussedQuestionTagsAsync()
@@ -87,8 +89,13 @@ namespace BugFixer.Data.Repository
             DateTime lastMonthAgo = DateTime.Today.AddMonths(-1);
             return await _ctx.QuestionTags
                 .Where(qt => qt.CreateDate < DateTime.Now && qt.CreateDate >= lastMonthAgo)
-                .OrderByDescending(qt=> qt.Question.Answers.Count()).Take(8)
+                .OrderByDescending(qt => qt.Question.Answers.Count()).Take(8)
                 .ToListAsync();
+        }
+
+        public async Task<int> GetQuestionsCountAsync()
+        {
+            return await _ctx.Questions.CountAsync();
         }
         #endregion
 
@@ -119,7 +126,7 @@ namespace BugFixer.Data.Repository
         public async Task<List<Answer>> GetUserAnswersAsync(int userId)
         {
             return await _ctx.Answers
-                .Where(a => a.UserId ==  userId)
+                .Where(a => a.UserId == userId)
                 .Include(a => a.Question)
                 .ThenInclude(q => q.QuestionRates)
                 .Include(a => a.User)
@@ -153,7 +160,7 @@ namespace BugFixer.Data.Repository
 
         #endregion
 
-# region userPanel
+        #region userPanel
         public async Task<List<Question>> GetUserQuestionsAsync(int userId)
         {
             return await _ctx.Questions

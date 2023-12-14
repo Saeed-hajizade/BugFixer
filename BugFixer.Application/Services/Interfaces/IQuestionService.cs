@@ -29,6 +29,7 @@ namespace BugFixer.Application.Services.Interfaces
         Task UpdateAnswerService(UpdateAnswerVM updateAnswer);
         Task<List<UserPanelAnswerVM>> GetUserAnswerServiceAsync(int userId);
         Task<UpdateAnswerVM> GetAnswerForUpdateServiceAsync(int answerId);
+        Task<int> GetQuestionsCountServiceAsync();    
 
         #endregion
 
@@ -45,7 +46,7 @@ namespace BugFixer.Application.Services.Interfaces
         //Task CreateQuestionRateServiceAsync(int qID, int userID);
         //Task DeleteQuestionRateServiceAsync(int qID, int userID);
 
-        Task HandleTrueAnswerServiceAsync(int qID, int aID);
+        Task HandleTrueAnswerServiceAsync(int qID, int aID, int userID);
 
         #endregion
 

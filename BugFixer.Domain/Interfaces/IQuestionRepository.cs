@@ -24,6 +24,7 @@ namespace BugFixer.Domain.Interfaces
         Task<IEnumerable<Question>> TopRatedQuestions();
         Task<IEnumerable<Question>> MostDiscussedQuestions();
         Task<IEnumerable<QuestionTag>> MostDiscussedQuestionTagsAsync();
+        Task<int> GetQuestionsCountAsync();
 
         #endregion
 

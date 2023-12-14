@@ -27,8 +27,8 @@
     <div class="breadcumb-layer">
         <div class="container">
             <ul itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
-                <li itemtype="http://schema.org/ListItem" itemscope="" itemprop="itemListElement"><a href="" itemprop="item"><span itemprop="name"> باگ فیکسر </span></a></li>
-                <li itemtype="http://schema.org/ListItem" itemscope="" itemprop="itemListElement"><a href="" itemprop="item"><span itemprop="name"> پرسش ها </span></a></li>
+                <li itemtype="http://schema.org/ListItem" itemscope="" itemprop="itemListElement"><a href="/" itemprop="item"><span itemprop="name"> باگ فیکسر </span></a></li>
+                <li itemtype="http://schema.org/ListItem" itemscope="" itemprop="itemListElement"><a href="/" itemprop="item"><span itemprop="name"> پرسش ها </span></a></li>
                 <li itemtype="http://schema.org/ListItem" itemscope="" itemprop="itemListElement"><a href="" itemprop="item"><span itemprop="name"> @Model.Title </span></a></li>
             </ul>
         </div>
@@ -52,7 +52,7 @@
                         <span><i> @Model.Visit </i> بازدید </span>
                         <span><i> @filter.Entities.Count </i> پاسخ </span>
                     @*    <span><i> 12K </i> رای </span>*@
-                        <span><i> 3 </i> امتیاز </span>
+                        <span><i> @Model.Rate </i> امتیاز </span>
 
                     </header>
 
@@ -148,8 +148,7 @@
                         </div>
                     </div>
 
-
-
+                 
                     @foreach (var item in filter.Entities)
                     {
                         <!-- Item -->
@@ -168,18 +167,11 @@
 
 
                                 }
-
-
-
                             </div>
                             <div class="inner">
                                 @item.Text
                                 <div class="rating-layer">
-                                    <form class="scoring-layer" action="" method="">
-                                        <button class="plus"><i class="icon-caret-up"></i></button>
-                                        <span> 12K </span>
-                                        <button class="negative"><i class="icon-caret-down"></i></button>
-                                    </form>
+                                   
                                     <form id="selected-answer" class="selected-answer">
                                         <button id="@($"trueAnswer{item.AnswerId}")" class="@((Model.TrueAnswer?.AnswerId==item.AnswerId)?"selected":"")" onclick='@(Model.User.Id == userId ? $"trueAnswer(event, {Model.Id}, {item.AnswerId})" : "")'><i class="icon-check"></i></button>
                                     </form>
@@ -204,10 +196,6 @@
                     }
 
                     <!-- pagination -->
-
-
-
-
                     <div class="row">
                         <div class="col-sm-5">
                           @*  <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing 1 to @filter.TakeEntity of @filter.Entities.Count entries</div>*@
@@ -216,10 +204,6 @@
                         <div class="col-sm-7">
                             <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
                                 <ul class="pagination">
-
-
-
-                                   
                                         @for (int i = @filter.GetCurrentPaging().StartPage; i <= @filter.GetCurrentPaging().EndPage; i++)
                                         {
                                             if (@filter.GetCurrentPaging().Page == i)
@@ -236,18 +220,6 @@
                                             }
 
                                         }
-                                    
-
-
-                                
-
-
-
-
-
-
-
-
                                 </ul>
                             </div>
                         </div>

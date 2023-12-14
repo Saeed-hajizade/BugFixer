@@ -47,6 +47,8 @@ namespace BugFixer.Domain.Interfaces
         #region Following
         Task<int> GetUserFollowingsCountAsync(int userId);
         Task<int> GetUserFollowersCountAsync(int userId);
+        //Task<List<Following>> GetUserFollowersAsync(int userId);
+        //Task<List<Following>> GetUserFollowingsAsync(int userId);
         #endregion
     }
 }
