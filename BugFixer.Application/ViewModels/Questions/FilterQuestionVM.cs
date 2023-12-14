@@ -1,4 +1,5 @@
 ﻿using BugFixer.Application.ViewModels.Common;
+using BugFixer.Domain.Models.Questions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,11 @@ using System.Threading.Tasks;
 
 namespace BugFixer.Application.ViewModels.Questions
 {
-    public class FilterQuestionVM: BasePaging<QuestionVM>
+    public class FilterQuestionVM:BasePaging<Question>
     {
-        public string OrderByType { get; set; }
+
+        public string OrderType { get; set; }
+
+
     }
 }

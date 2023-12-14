@@ -12,6 +12,7 @@ namespace BugFixer.Application.Services.Interfaces
     {
         #region Question Methods
         Task<IEnumerable<QuestionVM>> GetQuestionsServiceAsync();
+        Task<FilterQuestionVM> FilterQuestionsAsync(FilterQuestionVM filterQuestionVM);
         Task<QuestionVM> GetQuestionServiceAsync(int id);
         Task CreateQuestionServiceAsync(CreateQuestionVM quesion, int userId);
         Task UpdteQuestionVisitService(int questionId);
@@ -30,6 +31,7 @@ namespace BugFixer.Application.Services.Interfaces
         Task<List<UserPanelAnswerVM>> GetUserAnswerServiceAsync(int userId);
         Task<UpdateAnswerVM> GetAnswerForUpdateServiceAsync(int answerId);
         Task<int> GetQuestionsCountServiceAsync();    
+
 
         #endregion
 

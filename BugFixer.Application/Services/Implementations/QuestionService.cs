@@ -2,6 +2,7 @@
 using BugFixer.Application.ViewModels.Questions;
 using BugFixer.Domain.Interfaces;
 using BugFixer.Domain.Models.Questions;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 
 namespace BugFixer.Application.Services.Implementations
@@ -103,11 +104,41 @@ namespace BugFixer.Application.Services.Implementations
                 CreateDate = q.CreateDate,
             }).ToList();
         }
+        public async Task<FilterQuestionVM> FilterQuestionsAsync(FilterQuestionVM filterQuestionVM)
+        {
+            IQueryable<Question> query = _questionRepository.GetQuestionsQueryable();
 
+            switch (filterQuestionVM.OrderType)
+            {
+                case "New":
+                    query = query.OrderByDescending(q => q.CreateDate);
+                    break;
+                case "MostControversial":
+                    query = query.OrderByDescending(q => q.Answers.Count());
+                    break;
+                case "MostOutstanding":
+                    query = query.OrderByDescending(q => q.QuestionRates.Count());
+                    break;
+                case "WeekAgo":
+                    DateTime weeAgoTime = DateTime.Today.AddDays(-7);
+                    query = query.OrderByDescending(q=> q.CreateDate < DateTime.Now && q.CreateDate >=weeAgoTime);
+                    break;
+                case "MonthAgo":
+                    DateTime monthAgoTime = DateTime.Today.AddMonths(-1);
+                    query = query.OrderByDescending(q => q.CreateDate < DateTime.Now && q.CreateDate >= monthAgoTime);
 
+                    break;
 
+                default:
+                    break;
 
+            }
 
+     
+
+            await filterQuestionVM.Paging(query);
+            return filterQuestionVM;
+        }
         public async Task UpdteQuestionVisitService(int questionId)
         {
             Question question = await _questionRepository.GetQuestionAsync(questionId);
@@ -180,7 +211,7 @@ namespace BugFixer.Application.Services.Implementations
             IEnumerable<Question> questions = await _questionRepository.MostDiscussedQuestions();
             return questions.Select(q => new QuestionVM()
             {
-                NumberOfAnswers = q.Answers == null ? 0 : q.Answers.Count(),
+                NumberOfAnswers=!q.Answers.IsNullOrEmpty()?q.Answers.Count():0,
                 Id = q.Id,
                 Title = q.Title,
             }).ToList();
@@ -234,12 +265,12 @@ namespace BugFixer.Application.Services.Implementations
 
             switch (filter.OrderType)
             {
-                case "new":
+                case "New":
 
                     result = result.OrderByDescending(a => a.CreateDate);
                     break;
 
-                case "old":
+                case "Old":
 
                     result = result.OrderBy(a => a.CreateDate);
                     break;
@@ -400,6 +431,8 @@ namespace BugFixer.Application.Services.Implementations
                 LastAnswerUsername = a.Question.Answers.Count() == 0 ? "بدون پاسخ" : a.Question.Answers.LastOrDefault().User.UserName,
             }).ToList();
         }
+
+
 
         #endregion
     }

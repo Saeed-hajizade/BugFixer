@@ -10,17 +10,25 @@ namespace BugFixer.Web.Areas.Admin.Controllers
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
  
-        private readonly FilterUsersViewModel filterUsers;
+        
         public UserController(IUserService userService, IRoleService roleService)
         {
             _userService = userService;
-            filterUsers = new FilterUsersViewModel();
+         
             _roleService = roleService;
         }
         [HttpGet("admin/user-list")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string userNameFilter,int takeEntityFilter=10,int pageId=1)
         {
-            FilterUsersViewModel userLIst = await _userService.FilterUser(filterUsers);
+            FilterUsersViewModel filterUsersViewModel = new FilterUsersViewModel()
+            {
+                UserName = userNameFilter,
+                TakeEntity=takeEntityFilter,
+                Page=pageId
+            };
+            FilterUsersViewModel userLIst = await _userService.FilterUser(filterUsersViewModel);
+            ViewBag.usernameFilter = userNameFilter;
+            ViewBag.takeEntityFilter = takeEntityFilter;
             return View(userLIst);
         }
         [HttpGet]

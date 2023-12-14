@@ -1,10 +1,13 @@
 ﻿@model BugFixer.Application.ViewModels.User.FilterUsersPageVM
 @{
     ViewData["Title"] = "users-page";
+    string usernameFilter = ViewBag.UserNameFilter as string;
+    string ordertypeFilter = ViewBag.OrderTypeFilter as string;
 }
 
 <div class="user-page-style">
-
+    
+    
     <div class="breadcumb-layer">
         <div class="container">
             <ul itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
@@ -15,9 +18,7 @@
     </div>
 
     <div class="users-list page-style">
-
         <div class="container">
-
             <div class="right-col">
                 <header class="top-heading">
                     <h1><a href=""> مشاهده تمامی کاربر ها </a></h1>
@@ -25,20 +26,29 @@
                 </header>
                 <!-- Top -->
                 <div class="top-layer">
-                    <form action="" class="search-layer" onsubmit="handlUserNameFilter">
-                        <input type="text" name="" placeholder="دنبال چه کاربری میگردی ؟ ">
-                        <button><i class="icon-search"></i></button>
+                    <form asp-controller="Home" asp-action="UsersPage" method="get" class="search-layer">
+
+                        <input type="hidden" value="@Model.Page" name="pageId" />
+                        <input type="hidden" value="@ordertypeFilter" name="OrderType" />
+                
+
+                        <input type="text" id="UserNameFilterInput" value="@usernameFilter" name="userNameFilter" placeholder="دنبال چه کاربری میگردی ؟ ">
+
+                        <button type="submit"><i class="icon-search"></i></button>
                     </form>
                     <div class="filter-layer">
-                        <form asp-controller="Home" asp-action="" method="" id="OrderFilterForm">
+                        <form asp-controller="Home" asp-action="UsersPage" method="get" id="OrderFilterForm" >
+                            <input type="hidden" value="@Model.Page" name="pageId" />
+                            <input type="hidden" value="@usernameFilter" name="UserNameFilter" />
+
                             <div class="select-layer">
-                                <select id="OrderByFilter" onchange="handlOrderTypeFilter(event)">
-                                    <option value="New"> کاربران جدید </option>
-                                    <option value="MostRatedUsers"> امتیازآورترین کاربران </option>
-                                    <option value="MostScoringQuestioners"> امتیازآورترین پرسش کنندگان </option>
+                                <select id="OrderByFilter"  onchange="handlOrderTypeFilter(event)" name="OrderType" >
+                                    <option value="New" selected="@((ordertypeFilter=="New")?true:false)"> کاربران جدید </option>
+                                    <option value="MostRatedUsers" selected="@((ordertypeFilter=="MostRatedUsers")?true:false)"> امتیازآورترین کاربران </option>
+                                    <option value="MostScoringQuestioners" selected="@((ordertypeFilter=="MostScoringQuestioners")?true:false)"> امتیازآورترین پرسش کنندگان </option>
                                 </select>
                             </div>
-                            <button><i class="icon-sort"></i></button>
+                            @* <button><i class="icon-sort"></i></button> *@
                         </form>
                     </div>
                 </div>
@@ -63,8 +73,6 @@
                                                 {
                                                     <a href=""> @skil.SkillTitle </a>
                                                 }
-
-                                           
                                             }
                                         </p>
                                     </div>
@@ -72,49 +80,76 @@
                             </div>
                         }
                         <!-- /item -->
-
                     </div>
                 </div>
                 <!-- /users layer -->
                 <!-- pagination -->
-                <div class="pagination-layer">
-                    <div class="inner">
-                        <a href="" class="next-page"> <i class="icon-chevron-right"></i> </a>
-                        <div class="pages">
-                            <a href="" class="page">1</a>
-                            <a href="" class="page">2</a>
-                            <a href="" class="page current">3</a>
-                            <a href="" class="page">4</a>
-                            <a href="" class="page">5</a>
-                            <a href="" class="page">...</a>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing 1 to @Model.TakeEntity of @Model.Entities.Count entries</div>
                         </div>
-                        <a href="" class="prev-page"> <i class="icon-chevron-left"></i> </a>
+                        <div class="col-sm-7">
+                            <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                                <ul class="pagination">
+                                    @for (int i = Model.GetCurrentPaging().StartPage; i <= @Model.GetCurrentPaging().EndPage; i++)
+                                    {
+                                        if (@Model.GetCurrentPaging().Page == i)
+                                        {
+                                            <li class="paginate_button active">
+                                            <a class="page-link cursor-pointer" data-page="0" href="/users-page?pageId=@i&UserNameFilter=@usernameFilter&OrderType=@ordertypeFilter">@i</a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="paginate_button ">
+                                            <a class="page-link cursor-pointer" data-page="0" href="/users-page?pageId=@i&UserNameFilter=@usernameFilter&OrderType=@ordertypeFilter">@i</a>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                </div>
                 <!-- /pagination -->
             </div>
-
             <!-- aside -->
-            <partial name="_SideBar" />
+            @section SideBar{
+                <partial name="_SideBar" />
+            }
             <!-- /aside -->
-            <div class="clearfix"></div>
-
         </div>
-
     </div>
-
 </div>
-
 @section Landing{
     <script>
+        const handlePaginateHref = ( pageId) => {
+            // window.location.href = `https://localhost:44384/users-page?OrderType=${orderType}&userNameFilter=${userName}&pageid=${pageId}`;
+            window.location.href = `https://localhost:44384/users-page?pageid=${pageId}`;
+        }
         const handlOrderTypeFilter = (e) => {
-
             const filterText = e.target.value;
             $("#OrderFilterForm").trigger("submit");
-        }
-        
 
-      
+            // $.ajax({
+            //     type: "GET",
+            //     data: {
+            //         "OrderType": filterText,
+            //         "pageId": @Model.Page
+            //     },
+            //     dataType: 'json',
+            //     url: `/users-page/${filterText}/${@Model.Page}`,
+            //     success: function (response) {
+            //         if (response.status == "success") {
+
+            //             alert("salam")
+            //         }
+            //     },
+
+            // });
+        }
+        // function handleOrderTypeFilterForm(e) {
+        //     e.preventDefault();
+        // }
     </script>
 }
 

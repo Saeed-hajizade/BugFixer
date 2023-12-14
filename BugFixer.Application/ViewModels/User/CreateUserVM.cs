@@ -23,7 +23,7 @@ namespace BugFixer.Application.ViewModels.User
 
         public string Password { get; set; }
 
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
 
 
 

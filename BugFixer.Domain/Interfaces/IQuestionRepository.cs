@@ -1,9 +1,4 @@
 ﻿using BugFixer.Domain.Models.Questions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BugFixer.Domain.Interfaces
 {
@@ -14,6 +9,7 @@ namespace BugFixer.Domain.Interfaces
 
         #region Question Methods
         Task<IEnumerable<Question>> GetQuestionsAsync();
+        IQueryable<Question> GetQuestionsQueryable();
         Task<Question> GetQuestionAsync(int id);
         Task CreateQuestionAsync(Question quesion);
 

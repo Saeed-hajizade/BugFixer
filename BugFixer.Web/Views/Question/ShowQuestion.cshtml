@@ -18,6 +18,8 @@
         userId = 0;
     }
 
+    string orderTypeFilter = ViewBag.OrderTypeFilter as string;
+
 
 }
 
@@ -135,15 +137,16 @@
                     <div class="top-layer">
                         <h4><span> @Model.Answers.Count() </span> پاسخ به این پرسش </h4>
                         <div class="filter-layer">
-                            <form onsubmit="handleOrderTypeFilter()">
+                            <form asp-controller="Question" asp-action="ShowQuestion" method="get" id="OrderTypeForm">
+                                <input type="hidden" value="@filter.Page" name="pageId" />
                                 <div class="select-layer">
-                                    <select name="orderType" id="OrderTypeSelected">
-                                        <option value="new"> جدیدترین پاسخ ها </option>
-                                        <option value="old"> قدیمی ترین پاسخ ها </option>
+                                    <select name="orderType" id="OrderTypeSelected" onchange="handleOrderTypeFilter()">
+                                        <option value="New" selected="@((orderTypeFilter=="New")?true:false)"> جدیدترین پاسخ ها </option>
+                                        <option value="Old" selected="@((orderTypeFilter=="Old")?true:false)"> قدیمی ترین پاسخ ها </option>
 
                                     </select>
                                 </div>
-                                <button type="submit"><i class="icon-sort"></i></button>
+                                @* <button type="submit"><i class="icon-sort"></i></button> *@
                             </form>
                         </div>
                     </div>
@@ -209,13 +212,13 @@
                                             if (@filter.GetCurrentPaging().Page == i)
                                             {
                                                 <li class="paginate_button active">
-                                                    <a class="page-link cursor-pointer" data-page="0" href="/show-question/@Model.Id?pageid=@i">@i</a>
+                                                <a class="page-link cursor-pointer" data-page="0" href="/show-question/@Model.Id?pageid=@i&orderType=@orderTypeFilter">@i</a>
                                                 </li>
                                             }
                                             else
                                             {
                                                 <li class="paginate_button ">
-                                                    <a class="page-link cursor-pointer" data-page="0" href="/show-question/@Model.Id?pageid=@i">@i</a>
+                                                <a class="page-link cursor-pointer" data-page="0" href="/show-question/@Model.Id?pageid=@i&orderType=@orderTypeFilter">@i</a>
                                                 </li>
                                             }
 
@@ -277,10 +280,13 @@
 @section Landing{
 
     <script>
+     
+
         const handleOrderTypeFilter = () => {
-            const selectedVal = $("#OrderTypeSelected").val();
-            console.log(selectedVal);
+            const form = document.getElementById("OrderTypeForm");
+            form.submit();
         }
+
 
 
         function RateHandler(e, qID) {

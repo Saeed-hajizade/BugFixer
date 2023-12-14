@@ -52,7 +52,7 @@ namespace BugFixer.Application.Services.Implementations
         {
             IQueryable<User> query = _userRepository.UserListForFilter();
 
-            if (!string.IsNullOrEmpty(filter.UserName))
+            if (!string.IsNullOrEmpty(filter.UserName)) 
             {
                 query = query.Where(u => EF.Functions.Like(u.UserName, $"%{filter.UserName.Trim().ToLower()}%"));
             }
@@ -220,10 +220,10 @@ namespace BugFixer.Application.Services.Implementations
                     query = query.OrderBy(u => u.CreateDate);
                     break;
                 case "MostRatedUsers":
-                    query = query.OrderBy(u=> u.Answers.Select(a=> a.TrueAnswer).ToList().Count());
+                    query = query.OrderBy(u=> u.Answers.Count());
                     break;
                 case "MostScoringQuestioners":
-                    query = query.OrderBy(u=> u.Questions.Select(q=> q.QuestionRates).ToList().Count());
+                    query = query.OrderBy(u=> u.Questions.Count());
                     break;
 
 
@@ -232,8 +232,7 @@ namespace BugFixer.Application.Services.Implementations
                     break;
             }
 
-            if(filter.Reverse==true)
-                query= query.Reverse();
+  
 
 
             await filter.Paging(query);
